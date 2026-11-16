@@ -6,7 +6,7 @@ kythuat.work is an in-apartment repair and installation service (electrical, plu
 
 Sinh Vũ designed the whole product: brand identity, landing page, three apps for three groups of users, the day-to-day operating model, and built the system that runs behind it.
 
-This repository is a **showcase**. It holds a design system anyone can reuse, plus screenshots and the key design decisions. The full source (server, database, three apps, test suites) is open at [kythuat-work](https://github.com/ideasv/kythuat-work) under AGPL-3.0, with synthetic data in place of real data.
+This repository is a **showcase**. It holds a design system anyone can reuse, plus screenshots and the key design decisions. The full source (server, database, three apps, test suites) is open at [kythuat-work](https://github.com/sinhvustudio/kythuat-work) under AGPL-3.0, with synthetic data in place of real data.
 
 > kythuat.work is currently closed to customers and not yet officially operating.
 > Full project story: [sinhvu.com/en/case/kythuat-work](https://sinhvu.com/en/case/kythuat-work/)
