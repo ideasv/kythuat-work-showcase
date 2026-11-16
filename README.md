@@ -6,7 +6,7 @@ kythuat.work là dịch vụ sửa chữa và lắp đặt kỹ thuật trong c�
 
 Sinh Vũ làm trọn sản phẩm này: nhận diện thương hiệu, trang giới thiệu, ba ứng dụng cho ba nhóm người dùng, cách vận hành hằng ngày, và tự dựng hệ thống chạy phía sau.
 
-Kho này là **bản trưng bày**. Ở đây có hệ thiết kế để ai cũng lấy về dùng được, kèm ảnh màn hình và những quyết định thiết kế chính. Mã nguồn vận hành và số liệu kinh doanh được giữ riêng.
+Kho này là **bản trưng bày**. Ở đây có hệ thiết kế để ai cũng lấy về dùng được, kèm ảnh màn hình và những quyết định thiết kế chính. Toàn bộ mã nguồn của hệ (máy chủ, cơ sở dữ liệu, ba ứng dụng, bộ đo) được mở ở kho [kythuat-work](https://github.com/ideasv/kythuat-work), giấy phép AGPL-3.0, với dữ liệu giả thay cho dữ liệu thật.
 
 > Hiện kythuat.work đang tạm đóng cửa với khách, chưa hoạt động chính thức.
 > Câu chuyện đầy đủ của dự án: [sinhvu.com/case/kythuat-work](https://sinhvu.com/case/kythuat-work/)
