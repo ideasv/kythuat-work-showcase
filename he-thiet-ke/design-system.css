@@ -1,0 +1,2136 @@
+/* ============================================================================
+   kythuat.work — design-system.css
+   Bản 2.20.2 · 03/09/2026 · sàn cỡ chữ ô nhập phủ cả ba cửa trên thiết bị
+   chạm. Đổi hình trên điện thoại (ô nhập cửa thợ 15px lên 17px, cửa khách
+   và buồng lái lên 16px), máy bàn không lệch một điểm ảnh.
+
+   Bản 2.20.0 · 01/09/2026 · `.kt-dialog--chan`, hình của bề mặt THỨ TƯ:
+   câu chặn đến SAU một cú bấm. Cam chứ không đỏ, vì đỏ là màu của việc
+   PHÁ còn hộp chặn nói một việc lành không đi tiếp được.
+
+   Bản 2.19.0 · 31/08/2026 · `ui.toast` dung nạp ba phương ngữ (xem .js);
+   không đổi một luật hình nào
+   đè xuống 26px. Một lớp, hai bộ chọn, 0 giá trị đổi.
+
+   Bản 2.18.0 · 26/08/2026 · Hàng bảng nói được rằng nó VỪA MỚI VỀ. Mạch tin
+   chèn đơn mới vào bảng mà KHÔNG vẽ lại màn (giữ chỗ cuộn, ngăn kéo đang mở,
+   bộ lọc vừa đặt), nên hàng chèn thêm phải tự khai nó mới tới — không thì nó
+   lẫn vào giữa hai nghìn dòng cũ và việc chèn thành vô nghĩa.
+   Dùng dải `info`, KHÔNG mượn `is-selected`: hai câu khác nhau, `is-selected`
+   nói *đang được chọn*. Thanh chỉ dấu vẽ bằng `box-shadow: inset` nên không
+   chiếm bề ngang — `border-left` ở đây là đẩy cột và dựng lại bệnh tràn bảng
+   của mục 65. Hover vẫn ăn (người ta cần biết chuột đang ở đâu) nhưng thanh
+   chỉ dấu giữ nguyên, và `is-selected` vẫn thắng: dòng đang mở quan trọng hơn
+   dòng vừa tới.
+   CỐ Ý KHÔNG tự nhạt dần. Người điều phối ngó lên sau ba phút vẫn phải thấy
+   được cái gì đã đổi khi mình nhìn chỗ khác; dấu tự tan là lấy mất đúng thứ
+   nó sinh ra để nói. Dấu mất khi màn được vẽ lại, và đó là lúc người ta đã
+   nhìn rồi.
+
+   Bản 2.17.0 · 22/08/2026 · Tấm trượt có TRẦN CHIỀU CAO và cuộn được.
+   `.kt-sheet` khai `position: fixed; bottom: 0` mà không khai trần nào, nên
+   nội dung dài hơn màn thì tràn LÊN TRÊN rồi mất hẳn: mép trên tấm đóng đơn
+   đo được ở -1864px trên màn 1000px, ô số tiền đã nhận và dòng tổng phải thu
+   nằm ngoài khung nhìn và KHÔNG cách nào với tới. Nằm im từ ngày dựng vì mọi
+   tấm trượt tới nay đều ngắn; đợt vật tư thêm khối khai món và tấm cao lên
+   2864px. Cùng họ với `.kt-dialog--noi` đã có trần từ §33: một bề mặt nổi mà
+   không khai trần là một bề mặt hẹn giờ nuốt mất phần đầu của chính nó.
+
+   Bản 2.16.0 · 21/08/2026 · Thẻ thợ nói được rằng nó KHÔNG giao được.
+   `.kt-tech` có đúng hai trạng thái từ ngày dựng: thường và `--suggested`,
+   tức hệ chỉ vẽ nổi lời mời chứ không vẽ nổi lời từ chối. Buồng lái vì thế
+   bày sáu cái nút Giao giống hệt nhau cho sáu người máy chủ sẽ từ chối cả
+   sáu. Thêm `--chan` (viền và vạch màu chặn) và `__why` (câu vì sao), để
+   điều kiện chặn đi TRƯỚC cái nút ngay ở tầng hình.
+
+   Bản 2.15.1 · 21/08/2026 · Thẻ NỬA thôi tạo lề bằng `margin` của con.
+   Lề không gộp vào bề ngang, nên con nào khai `width: 100%` cũng tràn ra
+   ngoài đúng một lề — nút Gỡ của khối Giấy tờ nằm ngoài viền thẻ 19px từ
+   ngày dựng. Nay lề đi bằng `padding` của thẻ, ba thứ chạm mép kéo ngược
+   ra bằng lề âm kèm `width: auto` và `max-width: none`. Xem `#70`.
+
+   Bản 2.15.0 · 21/08/2026 · Ba chỗ phép đo cửa thợ lôi ra. (a) `.kt-invoice__row`
+   thôi ghim cột tiền ở 96px: `600.000 VNĐ` cần 107px nên số tiền lòi khỏi
+   thẻ ở MỌI khổ màn, mà nó lòi về phía phải nên trông như một cái lề.
+   (b) Thêm `.kt-seg--block` cho dải chọn trải hết bề ngang. (c) Hồ sơ
+   `touch` đưa `--kt-control-h-sm` về đọc thẳng `--kt-tap-min`.
+
+   Bản 2.14.0 · 21/08/2026 · Nhãn nút thôi gãy dòng. `.kt-btn` khai
+   `white-space: normal` từ ngày dựng, mà lớp thắng kế thừa nên nó phá cả
+   `white-space: nowrap` mà ô bảng đã khai đúng: "Lập phiếu mua" đọc ra ba
+   dòng ngay cạnh một ô chọn tháng rộng gần cả hàng. Ba tầng cùng một bệnh,
+   chữa cả ba ở thành phần: nút thôi cho gãy nhãn · nút thôi nhường chỗ
+   (`flex-shrink: 0`) · ô ngày tháng thôi nuốt cả hàng ngang. Cặp đi kèm là
+   `.kt-row` gãy được, vì phần dôi ra phải có nơi đi.
+
+   Bản 2.13.0 · 20/08/2026 · Lớp da cổng khách: token mép bề mặt, thang bo góc
+   và thang độ cao đọc theo HỒ SƠ NGƯỜI ĐỌC chứ không cố định cho cả hệ. Cửa
+   thợ và buồng lái giữ nguyên từng pixel. Trước đó: `KT.fmt.tuoiNgay` nói
+   thành lời. Số 0 cấm in ra "0 ngày" — không ai nói thế, và nó rơi
+   đúng vào trường hợp thường gặp nhất (khoản vừa thu sáng nay). Hỏng
+   ở HAI cửa cùng lúc nên lời thuộc về hệ, không thuộc về app.
+
+   Bản 2.12.3 · 20/08/2026 · cửa thợ về nền kem (trắng-trên-trắng làm thẻ
+   tan vào nền); thêm `.kt-list__row--doc` cho hàng chỉ để đọc.
+   Bản 2.12.2 · 20/08/2026 · thêm hình `kt-refresh` (nút lấy lại thôi mượn
+   hình vòng quay của trạng thái đang tải).
+   Bản 2.12.1 · 20/08/2026 · thanh phân bố tô được: `__fill` là <span> nằm
+   trong `__track`, mà <span> là inline nên width và height bị bỏ qua sạch.
+   Track thì thoát nạn nhờ nó là ô lưới (lưới tự chuyển con sang khối), còn
+   fill thì không có gì cứu — nó dựng ra đủ, đúng lớp, và vẽ ra số không.
+   Chính tệp tham chiếu của hệ cũng viết <span>, tức bản mẫu vẽ ra bar rỗng.
+   Bản 2.12.0 · 19/08/2026 · dòng thời gian có chỗ đứng: xong, đang, dừng,
+   chờ — cùng dữ liệu `dungHanhTrinh()` mà hệ mới chỉ vẽ được theo chiều ngang.
+   Bản 2.11.0 · 19/08/2026 · biểu đồ: cột và chấm bằng HTML, trục giá trị,
+   lưới ngang, sắc độ cho chuỗi, vạch ngưỡng thật trên thanh xếp hạng
+   Bản 2.10.0 · 19/08/2026 · họ nhận việc: chờ, quá hạn, đã nhận, đời cũ
+   Bản 2.9.1 · 19/08/2026 · rãnh giữa hai chặng lớn hơn rãnh trong một chặng
+   Bản 2.9.0 · 19/08/2026 · chú giải ba tầng: thẻ cửa, chữ có nghĩa, vị trí tự khai vai
+   Bản 2.8.0 · 19/08/2026 · thẻ trần tự giữ lề; nhóm phân đoạn trong ô lấp đầy ô
+   Bản 2.5.0 · 18/08/2026 · hướng nhận diện C (navy trên nền kem, cam dùng dè)
+   Bản 2.2.0 hoà giải với D1, xem VENH.md. Chỉ THÊM .kt-badge--lobby;
+   không sửa một token nào, không sửa một thành phần nào của bản 2.1.0.
+
+   KIẾN TRÚC BA TẦNG
+     Tầng 1, nguyên thuỷ  --kt-<ramp>-<step>      giá trị thô, không dùng trực tiếp
+     Tầng 2, ngữ nghĩa    --kt-<nhóm>-<vai>       vai trò, đây là tầng để dùng
+     Tầng 3, thành phần   --kt-<comp>-<thuộc tính> chỉ thành phần đó đọc
+
+   Quy tắc: markup và màn hình CHỈ được đọc tầng 2 và tầng 3. Không màn nào
+   đọc tầng 1, không màn nào gõ mã màu.
+
+   Thang màu sinh trong OKLCH trên một trục sáng dùng chung, nên cùng một bậc
+   của mọi thang có cùng sức nặng thị giác. Bậc neo (*) là màu thật trong logo.
+   Tự chứa: không @import, không CDN, không thư viện ngoài.
+   ==========================================================================*/
+
+/* --- Phông ----------------------------------------------------------------
+   Be Vietnam Pro, chở đủ dấu tiếng Việt kể cả dấu chồng. Đặt bốn tệp woff2
+   vào /fonts/. Chưa có tệp thì rơi về phông hệ điều hành, không gọi mạng.  */
+@font-face { font-family: "Be Vietnam Pro"; font-style: normal; font-weight: 400; font-display: swap; src: local("Be Vietnam Pro Regular"), local("BeVietnamPro-Regular"), url("fonts/BeVietnamPro-Regular.woff2") format("woff2"); }
+@font-face { font-family: "Be Vietnam Pro"; font-style: normal; font-weight: 500; font-display: swap; src: local("Be Vietnam Pro Medium"), local("BeVietnamPro-Medium"), url("fonts/BeVietnamPro-Medium.woff2") format("woff2"); }
+@font-face { font-family: "Be Vietnam Pro"; font-style: normal; font-weight: 600; font-display: swap; src: local("Be Vietnam Pro SemiBold"), local("BeVietnamPro-SemiBold"), url("fonts/BeVietnamPro-SemiBold.woff2") format("woff2"); }
+@font-face { font-family: "Be Vietnam Pro"; font-style: normal; font-weight: 700; font-display: swap; src: local("Be Vietnam Pro Bold"), local("BeVietnamPro-Bold"), url("fonts/BeVietnamPro-Bold.woff2") format("woff2"); }
+
+/* ==========================================================================
+   TẦNG 1 — NGUYÊN THUỶ
+   ==========================================================================*/
+:root {
+  /* brand, neo 900 = #001E52 */
+  --kt-brand-50: #F7FAFF;  --kt-brand-100: #EAF2FF; --kt-brand-200: #D3E4FF; --kt-brand-300: #B7D1FB;
+  --kt-brand-400: #95B7EE; --kt-brand-500: #7399D7; --kt-brand-600: #577CB8; --kt-brand-700: #3C5D93;
+  --kt-brand-800: #27426D; --kt-brand-900: #001E52; --kt-brand-950: #0A1931;
+
+  /* accent, neo 500 = #EF7C00 */
+  --kt-accent-50: #FFF9F4;  --kt-accent-100: #FFEEE3; --kt-accent-200: #FFDBC3; --kt-accent-300: #FFC095;
+  --kt-accent-400: #FE994E; --kt-accent-500: #EF7C00; --kt-accent-600: #BB6000; --kt-accent-700: #8F4700;
+  --kt-accent-800: #673200; --kt-accent-900: #461F00; --kt-accent-950: #2C1100;
+
+  /* cream, neo 200 = #F5E9C3; bậc 75 là nền trang của hướng C */
+  --kt-cream-50: #FBFAF6;  --kt-cream-75: #FBF7EC;  --kt-cream-100: #F4F2E9; --kt-cream-200: #F5E9C3;
+  --kt-cream-300: #D7CFB8; --kt-cream-400: #BFB696; --kt-cream-500: #A39874; --kt-cream-600: #867B59;
+  --kt-cream-700: #675D3E; --kt-cream-800: #4A4229; --kt-cream-900: #312B18; --kt-cream-950: #1E190B;
+
+  /* Thang THAN · trung tính hơi ấm, cho chủ đề tối.
+     Nền tối KHÔNG được lấy màu thương hiệu: navy của hệ bão hoà 47% tới
+     100%, mà một mảng bão hoà cao trải hết màn hình thì rung mắt và nuốt
+     mọi điểm nhấn · màu thương hiệu chỉ làm ĐIỂM, không làm NỀN. Thang
+     này giữ bão hoà 5% tới 10% ở vùng tối và nghiêng 30-39 độ cho ấm,
+     cùng họ với kem, nên nó vẫn là nhà mình chứ không phải xám máy móc.
+     Thang slate sẵn có KHÔNG dùng được: nó bão hoà 20-24% và nghiêng
+     217 độ, tức vẫn là xanh. */
+  --kt-than-975: #0A0A09; --kt-than-950: #121110; --kt-than-900: #1C1A18;
+  --kt-than-800: #272420; --kt-than-700: #37332D; --kt-than-600: #4C463E;
+  --kt-than-500: #6B6459; --kt-than-400: #8F887B; --kt-than-300: #B3ABA0;
+  --kt-than-200: #D5CFC5; --kt-than-100: #EAE5DC;
+
+  /* slate, neo 800 = #3F4A5E */
+  --kt-slate-50: #F8FAFD;  --kt-slate-100: #EFF2F7; --kt-slate-200: #DDE3EE; --kt-slate-300: #C7D0DF;
+  --kt-slate-400: #ABB6CB; --kt-slate-500: #8C99B0; --kt-slate-600: #707C92; --kt-slate-700: #535E72;
+  --kt-slate-800: #3F4A5E; --kt-slate-900: #252B37; --kt-slate-950: #151A22;
+
+  --kt-success-50: #F3FDF7;  --kt-success-100: #E5F7EB; --kt-success-200: #CAEDD7; --kt-success-300: #A8DEBD;
+  --kt-success-400: #7FC99E; --kt-success-500: #54AD7D; --kt-success-600: #349061; --kt-success-700: #16794C;
+  --kt-success-800: #00502F; --kt-success-900: #00351D; --kt-success-950: #002010;
+
+  --kt-warning-50: #FFF9F3;  --kt-warning-100: #FFEEE0; --kt-warning-200: #FFDCBE; --kt-warning-300: #F8C496;
+  --kt-warning-400: #EAA567; --kt-warning-500: #D18435; --kt-warning-600: #B4690E; --kt-warning-700: #884D00;
+  --kt-warning-800: #623600; --kt-warning-900: #422200; --kt-warning-950: #291300;
+
+  --kt-danger-50: #FFF8F7;  --kt-danger-100: #FFEDEA; --kt-danger-200: #FFD9D3; --kt-danger-300: #FFBCB3;
+  --kt-danger-400: #FF9387; --kt-danger-500: #EE685D; --kt-danger-600: #CC4941; --kt-danger-700: #A42C27;
+  --kt-danger-800: #90000A; --kt-danger-900: #550909; --kt-danger-950: #370202;
+
+  --kt-info-50: #F6FBFF;  --kt-info-100: #E7F3FF; --kt-info-200: #CDE6FF; --kt-info-300: #ACD4FB;
+  --kt-info-400: #86BBEE; --kt-info-500: #5F9ED7; --kt-info-600: #4281B8; --kt-info-700: #1E5F94;
+  --kt-info-800: #14456D; --kt-info-900: #072D4B; --kt-info-950: #021B31;
+
+  --kt-white: #FFFFFF;
+  --kt-black: #000000;
+
+  /* Nguyên thuỷ phi màu */
+  --kt-unit: 4px;
+  --kt-font-sans: "Be Vietnam Pro", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", Arial, sans-serif;
+  /* Mã đơn, mã khách, mã giao dịch: phông đều nét thì mắt so được từng ký tự.
+     Chỗ nào in mã ra cho người ta ĐỐI CHIẾU thì phải dùng nó.            */
+  --kt-font-mono: ui-monospace, "SF Mono", Menlo, Consolas, "Roboto Mono", monospace;
+  --kt-weight-regular: 400; --kt-weight-medium: 500; --kt-weight-semibold: 600; --kt-weight-bold: 700;
+  --kt-tracking-tight: -0.011em; --kt-tracking-normal: 0em; --kt-tracking-wide: 0.02em; --kt-tracking-caps: 0.12em;
+  --kt-leading-tight: 1.2; --kt-leading-snug: 1.35; --kt-leading-normal: 1.55; --kt-leading-loose: 1.7;
+}
+
+/* ==========================================================================
+   TẦNG 2 — NGỮ NGHĨA, CHỦ ĐỀ SÁNG
+   Số trong chú thích là tương phản đã đo theo WCAG 2.1.
+   ==========================================================================*/
+:root {
+  color-scheme: light;
+
+  /* Nền và bề mặt */
+  --kt-bg-canvas: var(--kt-cream-75);
+  --kt-bg-canvas-plain: var(--kt-white);
+  --kt-bg-subtle: var(--kt-cream-100);
+  --kt-bg-inverse: var(--kt-brand-900);
+  --kt-surface: var(--kt-white);
+  --kt-surface-sunken: var(--kt-cream-100);
+  --kt-surface-accent: var(--kt-cream-200);
+  --kt-surface-inverse: var(--kt-brand-900);
+  --kt-surface-disabled: var(--kt-slate-100);
+  --kt-surface-overlay: var(--kt-white);
+
+  /* Chữ */
+  --kt-text-primary: var(--kt-brand-900);      /* 15.38 trên nền trang */
+  --kt-text-secondary: var(--kt-slate-800);    /*  8.55 */
+  --kt-text-tertiary: var(--kt-slate-700);     /*  6.26 */
+  --kt-text-disabled: var(--kt-slate-500);     /*  2.75, miễn ngưỡng theo WCAG 1.4.3 */
+  --kt-text-placeholder: var(--kt-slate-700);  /*  6.26 */
+  --kt-text-on-inverse: var(--kt-white);       /* 16.06 trên navy 900 */
+  /* Nút đứng TRÊN nền đảo (dải nổi bật). Hai app từng mượn `text-on-inverse`
+     làm nền và `text-brand` làm mực cho nó · ở chủ đề sáng vô hại vì hai
+     token ấy tình cờ đúng màu, ở chủ đề tối cả hai hoá kem và cái nút mất
+     sạch chữ. Vai này cần cặp riêng: nền LUÔN sáng (nút phải nổi trên dải
+     ở cả hai chủ đề), mực LUÔN tối. */
+  --kt-on-inverse-fill: var(--kt-white);
+  --kt-on-inverse-ink: var(--kt-brand-900);
+  --kt-text-on-inverse-muted: var(--kt-brand-300); /* 8.02 trên navy 900 */
+  --kt-text-on-accent: var(--kt-white);         /* 16.06 trên nền nút navy */
+  --kt-text-link: var(--kt-brand-800);          /*  9.64 */
+  --kt-text-link-hover: var(--kt-brand-900);    /* 15.00 */
+  --kt-text-brand: var(--kt-brand-900);
+  --kt-text-accent: var(--kt-accent-700);
+
+  /* Viền */
+  --kt-border-subtle: var(--kt-cream-300);
+  --kt-border-default: var(--kt-slate-300);
+  --kt-border-strong: var(--kt-brand-900);
+  --kt-border-accent: var(--kt-accent-600);
+  --kt-border-focus: var(--kt-accent-600);
+  --kt-border-error: var(--kt-danger-800);
+
+  /* Hành động. Nền nút chính là navy thương hiệu, chữ trắng đạt 16.06.
+     Cam sáng 500 không bao giờ làm nền cho chữ: nó là màu chỉ báo, dùng cho vạch
+     tiến trình, gạch tab đang chọn, đèn trạng thái, viền dòng đang chọn. */
+  --kt-action-fill: var(--kt-brand-900);
+  --kt-action-fill-hover: var(--kt-brand-800);
+  --kt-action-fill-active: var(--kt-brand-950);
+  --kt-action-indicator: var(--kt-accent-500);
+  --kt-action-quiet-fg: var(--kt-brand-900);
+
+  /* Ngữ nghĩa trạng thái: fill có chữ trắng, fg là chữ trên nền nhạt */
+  --kt-success-fill: var(--kt-success-700); --kt-success-fg: var(--kt-success-800); --kt-success-bg: var(--kt-success-100); --kt-success-border: var(--kt-success-700);
+  --kt-warning-fill: var(--kt-warning-600); --kt-warning-fg: var(--kt-warning-700); --kt-warning-bg: var(--kt-warning-100); --kt-warning-border: var(--kt-warning-600);
+  --kt-danger-fill: var(--kt-danger-800);   --kt-danger-fg: var(--kt-danger-800);   --kt-danger-bg: var(--kt-danger-100);   --kt-danger-border: var(--kt-danger-800);
+  --kt-info-fill: var(--kt-info-700);       --kt-info-fg: var(--kt-info-800);       --kt-info-bg: var(--kt-info-100);       --kt-info-border: var(--kt-info-700);
+  --kt-neutral-fill: var(--kt-slate-800);   --kt-neutral-fg: var(--kt-slate-800);   --kt-neutral-bg: var(--kt-slate-100);   --kt-neutral-border: var(--kt-slate-400);
+
+  /* Lớp trạng thái. Một mô hình duy nhất cho mọi thành phần bấm được:
+     phủ mực lên bề mặt theo tỉ lệ, không đặt màu riêng cho từng nút. */
+  --kt-state-ink: var(--kt-brand-900);
+  --kt-state-hover: 8%;
+  --kt-state-pressed: 14%;
+  --kt-state-selected: 10%;
+  --kt-state-disabled-opacity: 0.42;
+
+  /* Lớp che, ánh sáng chạy trên khung xương */
+  --kt-scrim: color-mix(in srgb, var(--kt-brand-950) 62%, transparent);
+  --kt-sheen: color-mix(in srgb, var(--kt-white) 72%, transparent);
+
+  /* Đổ bóng, pha theo mực nền nên không xám bẩn */
+  --kt-shadow-xs: 0 1px 0 color-mix(in srgb, var(--kt-brand-950) 10%, transparent);
+  --kt-shadow-sm: 0 1px 2px color-mix(in srgb, var(--kt-brand-950) 12%, transparent);
+  --kt-shadow-md: 0 4px 14px color-mix(in srgb, var(--kt-brand-950) 14%, transparent);
+  --kt-shadow-lg: 0 12px 32px color-mix(in srgb, var(--kt-brand-950) 20%, transparent);
+  --kt-shadow-sheet: 0 -8px 28px color-mix(in srgb, var(--kt-brand-950) 20%, transparent);
+}
+
+/* ==========================================================================
+   TẦNG 2 — CHỮ, KHOẢNG CÁCH, HÌNH HỌC, CHUYỂN ĐỘNG, TẦNG LỚP
+   ==========================================================================*/
+:root {
+  /* Vai chữ. Mỗi vai gói đủ cỡ, độ cao dòng, cân nặng, giãn chữ. */
+  --kt-type-display-size: 34px;   --kt-type-display-leading: var(--kt-leading-tight); --kt-type-display-weight: var(--kt-weight-bold);     --kt-type-display-tracking: var(--kt-tracking-tight);
+  --kt-type-headline-size: 26px;  --kt-type-headline-leading: var(--kt-leading-tight); --kt-type-headline-weight: var(--kt-weight-bold);   --kt-type-headline-tracking: var(--kt-tracking-tight);
+  --kt-type-title-size: 20px;     --kt-type-title-leading: var(--kt-leading-tight);   --kt-type-title-weight: var(--kt-weight-bold);      --kt-type-title-tracking: var(--kt-tracking-normal);
+  --kt-type-subtitle-size: 17px;  --kt-type-subtitle-leading: var(--kt-leading-snug); --kt-type-subtitle-weight: var(--kt-weight-semibold); --kt-type-subtitle-tracking: var(--kt-tracking-normal);
+  --kt-type-body-size: 15px;      --kt-type-body-leading: var(--kt-leading-normal);   --kt-type-body-weight: var(--kt-weight-regular);    --kt-type-body-tracking: var(--kt-tracking-normal);
+  --kt-type-label-size: 13px;     --kt-type-label-leading: var(--kt-leading-snug);    --kt-type-label-weight: var(--kt-weight-medium);    --kt-type-label-tracking: var(--kt-tracking-normal);
+  --kt-type-caption-size: 12px;   --kt-type-caption-leading: var(--kt-leading-snug);  --kt-type-caption-weight: var(--kt-weight-regular); --kt-type-caption-tracking: var(--kt-tracking-normal);
+  --kt-type-overline-size: 11px;  --kt-type-overline-leading: var(--kt-leading-snug); --kt-type-overline-weight: var(--kt-weight-bold);   --kt-type-overline-tracking: var(--kt-tracking-caps);
+  /* Bậc thứ chín, và nó có mặt vì hồ sơ `compact` cần một cỡ giữa `body`
+     15px và `label` 13px cho bảng số dày đặc. Nó vốn ĐÃ tồn tại — nhưng
+     tồn tại dưới dạng một literal `14px` gõ thẳng vào hồ sơ, tức một cỡ
+     chữ không ai khai đang vẽ gần một nửa số chữ của buồng lái ở khổ hẹp
+     (đo 31/08: 5.833 trên 12.576 lượt). Hai hồ sơ kia đều đọc từ thang;
+     chỉ hồ sơ này tự gõ số, và một con số không có tên thì không có chỗ
+     nào để sửa nó một lần. Giá trị GIỮ NGUYÊN: đây là đặt tên, không
+     phải đổi hình. */
+  --kt-type-compact-size: 14px;   --kt-type-compact-leading: var(--kt-leading-normal);
+
+  /* Khoảng cách, bội của --kt-unit */
+  --kt-space-0: 0px;  --kt-space-1: 4px;  --kt-space-2: 8px;  --kt-space-3: 12px; --kt-space-4: 16px;
+  --kt-space-5: 20px; --kt-space-6: 24px; --kt-space-7: 28px; --kt-space-8: 32px; --kt-space-10: 40px;
+  --kt-space-12: 48px; --kt-space-16: 64px; --kt-space-20: 80px;
+
+  /* Hình học */
+  --kt-radius-none: 0px; --kt-radius-sm: 0px; --kt-radius-md: 0px; --kt-radius-lg: 0px; --kt-radius-full: 999px;
+  --kt-radius-sheet: 0px; --kt-radius-pill: 0px;
+
+  /* MÉP CỦA MỘT BỀ MẶT.
+     Thẻ, đơn và dòng dịch vụ đều tự vẽ `border: 2px solid navy`, nên muốn
+     một cổng nhẹ tay hơn thì phải sửa ba chỗ và nhớ mãi là có ba chỗ. Ba
+     token này gom câu hỏi đó về một nơi: mép dày bao nhiêu, màu gì, và bề
+     mặt có nổi lên khỏi nền không. Mặc định giữ ĐÚNG hình cũ, nên cửa thợ
+     và buồng lái không lệch một pixel. Cổng khách ghi đè ở §lớp da. */
+  --kt-surface-edge-w: var(--kt-border-w);
+  --kt-surface-edge: var(--kt-border-strong);
+  --kt-surface-lift: none;
+  --kt-border-w-hair: 1px; --kt-border-w: 2px; --kt-border-w-thick: 3px;
+  --kt-focus-ring-w: 3px; --kt-focus-ring-offset: 2px;
+
+  /* Tầng lớp */
+  --kt-z-base: 0; --kt-z-sticky: 100; --kt-z-nav: 200; --kt-z-scrim: 300; --kt-z-drawer: 400;
+  --kt-z-sheet: 500; --kt-z-dialog: 600; --kt-z-popover: 700; --kt-z-toast: 800; --kt-z-tooltip: 900;
+
+  /* Chuyển động */
+  --kt-dur-instant: 80ms; --kt-dur-fast: 120ms; --kt-dur-normal: 180ms; --kt-dur-slow: 240ms; --kt-dur-slower: 320ms;
+  --kt-ease-standard: cubic-bezier(0.2, 0, 0.2, 1);
+  --kt-ease-decelerate: cubic-bezier(0, 0, 0.2, 1);
+  --kt-ease-accelerate: cubic-bezier(0.4, 0, 1, 1);
+  --kt-transition-color: color var(--kt-dur-fast) var(--kt-ease-standard), background-color var(--kt-dur-fast) var(--kt-ease-standard), border-color var(--kt-dur-fast) var(--kt-ease-standard);
+
+  /* Mốc màn hình và bề rộng vùng đọc */
+  --kt-bp-sm: 390px; --kt-bp-md: 768px; --kt-bp-lg: 1024px; --kt-bp-xl: 1440px;
+  --kt-measure: 68ch;
+}
+
+/* ==========================================================================
+   TẦNG 3 — TOKEN THÀNH PHẦN THEO MẬT ĐỘ
+   Ba hồ sơ mật độ. Chỉ đổi kích thước, không đổi màu thương hiệu.
+     touch       cửa thợ, một tay, ngoài nắng, tay bẩn
+     comfortable cửa khách, thoáng và trấn an
+     compact     buồng lái, nén và quét nhanh
+   .kt-mode-* là bút danh cũ, giữ lại để mã đang chạy không vỡ.
+   ==========================================================================*/
+:root, [data-kt-density="comfortable"], .kt-mode-khach {
+  --kt-control-h: 48px; --kt-control-h-sm: 40px; --kt-control-h-lg: 56px;
+  --kt-control-px: var(--kt-space-4);
+  --kt-tap-min: 48px;
+  --kt-gap: var(--kt-space-4);
+  --kt-pad: var(--kt-space-4);
+  --kt-pad-tight: var(--kt-space-3);
+  --kt-font-ui: var(--kt-type-body-size);
+  /* Cỡ chữ của ô nhập tách khỏi cỡ chữ giao diện. Hai thứ trùng nhau ở
+     mọi hồ sơ hôm nay, nhưng chúng trả lời hai câu khác nhau: một câu về
+     cỡ chữ đọc, một câu về ô người ta gõ vào. Safari trên iPhone tự phóng
+     to trang khi con trỏ vào ô có cỡ chữ dưới mười sáu điểm, nên ô nhập
+     có một sàn mà chữ thường không có. */
+  --kt-input-font: var(--kt-font-ui);
+  --kt-font-ui-strong: var(--kt-type-subtitle-size);
+  --kt-row-h: 52px;
+  /* Trần bề ngang của MỘT ô bảng. Bảng mang `min-width: max-content`, tức
+     bề ngang bảng do NỘI DUNG quyết; một ô chở chữ người gõ thì không có
+     độ dài nào là trần, nên đúng một câu ghi chú dài kéo cả bảng ra ngoài
+     khung rồi xén mất mấy cột cuối. Trần phải đến từ HỆ và đo bằng chỗ
+     đọc được: 360px ở cỡ chữ nền là quãng 45-50 ký tự một dòng. */
+  --kt-cell-max: 360px;
+  --kt-icon-size: 20px;
+  --kt-choice-size: 24px;
+  --kt-choice-gap: var(--kt-space-3);
+  --kt-switch-w: 52px; --kt-switch-h: 28px;
+}
+[data-kt-density="touch"], .kt-mode-ktv {
+  /* `--kt-control-h-sm` ĐỌC TỪ ngưỡng chạm, không phải một con số riêng.
+     Bản cũ khai 48px ngay bên trên dòng khai `--kt-tap-min: 56px`: hồ sơ
+     tự đặt một cái sàn rồi tự ship thành phần đứng dưới sàn ấy. Đo được
+     ở cửa thợ: 21/30 vùng chạm dưới ngưỡng, và chúng đều là `.kt-chip`
+     với `.kt-btn--sm` — trong khi `.kt-tab` nằm ngay cạnh thì đúng 56px,
+     nên hai anh em cùng một hàng cao thấp khác nhau.
+     Ở hồ sơ này KHÔNG có chỗ cho nút nhỏ: app cầm ngoài hiện trường,
+     ngón tay đeo găng. Muốn nhỏ hơn thì đổi hồ sơ, đừng đổi một thành
+     phần. */
+  --kt-control-h: 56px; --kt-control-h-sm: var(--kt-tap-min); --kt-control-h-lg: 64px;
+  --kt-control-px: var(--kt-space-5);
+  --kt-tap-min: 56px;
+  --kt-gap: var(--kt-space-5);
+  --kt-pad: var(--kt-space-5);
+  --kt-pad-tight: var(--kt-space-4);
+  --kt-font-ui: var(--kt-type-subtitle-size);
+  --kt-font-ui-strong: var(--kt-type-title-size);
+  --kt-row-h: 64px;
+  --kt-icon-size: 24px;
+  --kt-choice-size: 28px;
+  --kt-choice-gap: var(--kt-space-4);
+  --kt-switch-w: 60px; --kt-switch-h: 32px;
+}
+[data-kt-density="compact"], .kt-mode-admin {
+  --kt-control-h: 32px; --kt-control-h-sm: 28px; --kt-control-h-lg: 40px;
+  --kt-control-px: var(--kt-space-3);
+  --kt-tap-min: 32px;
+  --kt-gap: var(--kt-space-3);
+  --kt-pad: var(--kt-space-3);
+  --kt-pad-tight: var(--kt-space-2);
+  --kt-font-ui: var(--kt-type-compact-size);
+  --kt-font-ui-strong: var(--kt-type-body-size);
+  --kt-row-h: 38px;
+  /* Buồng lái xếp tám tới mười cột trên một khung 1114px, nên trần phải
+     hẹp hơn hai cổng kia: 280px là quãng 40 ký tự ở cỡ chữ 14px. */
+  --kt-cell-max: 280px;
+  --kt-icon-size: 18px;
+  --kt-choice-size: 18px;
+  --kt-choice-gap: var(--kt-space-2);
+  --kt-switch-w: 40px; --kt-switch-h: 22px;
+}
+
+/* ── Buồng lái trên thiết bị chạm ──────────────────────────────────────
+   Mật độ là thuộc tính của THIẾT BỊ, không phải của cửa. Hồ sơ `compact`
+   khai ba mươi hai điểm ảnh vì buồng lái là bảng số dày đặc cho người
+   ngồi trước chuột, và con số đó đúng cho đúng người đó. Nhưng nó khai
+   theo TÊN CỬA, nên cùng một buồng lái mở trên điện thoại vẫn phát ra nút
+   hai mươi tám điểm ảnh cho ngón tay.
+
+   Ngưỡng chạm của ngành là bốn mươi bốn điểm ảnh (Apple) và bốn mươi tám
+   (Material); WCAG 2.5.5 lấy bốn mươi bốn. Bảy trăm mười cái nút của
+   buồng lái đang đứng dưới ngưỡng ấy, một trăm bảy mươi lăm cái trong số
+   đó ở mức hai mươi tám.
+
+   Lật theo `pointer: coarse` chứ không theo bề ngang: máy tính bảng cắm
+   bàn phím rời vẫn là chuột và vẫn nên dày, còn điện thoại xoay ngang
+   tám trăm điểm ảnh vẫn là ngón tay. Bề ngang trả lời câu hỏi về CHỖ,
+   con trỏ trả lời câu hỏi về NGÓN TAY, và đây là câu hỏi thứ hai.
+
+   Khối này CỐ Ý không đụng khoảng cách, lề, hay cỡ chữ giao diện. Mật độ
+   thông tin của buồng lái vẫn có giá trị trên điện thoại; thứ hỏng là
+   vùng chạm, nên chỉ vùng chạm được sửa. Bảng nhiều cột là đợt khác.
+
+   Quy tắc `@media` KHÔNG cộng độ ưu tiên, nên khối này thắng nhờ đứng
+   SAU khối `compact` với bộ chọn giống hệt. Đừng dời nó lên trên.        */
+@media (pointer: coarse) {
+  [data-kt-density="compact"], .kt-mode-admin {
+    /* Đọc thẳng ngưỡng chạm thay vì gõ lại con số, đúng cách hồ sơ `touch`
+       đã sửa: khai sàn một chỗ rồi phát một con số khác ở chỗ kia là hồ sơ
+       tự mâu thuẫn với chính nó. */
+    --kt-control-h: var(--kt-tap-min);
+    --kt-control-h-sm: var(--kt-tap-min);
+    --kt-control-h-lg: 56px;
+    --kt-tap-min: 48px;
+    /* Dòng bảng và dòng danh sách đều bấm được ở buồng lái, nên chúng là
+       vùng chạm chứ không phải chỗ chứa chữ. */
+    --kt-row-h: 48px;
+    /* Ô tích mười tám điểm ảnh chạm được nhờ lề của nhãn, nhưng nhìn không
+       ra là đang bật hay tắt trên màn cầm tay. */
+    --kt-choice-size: 24px;
+    --kt-switch-w: 52px; --kt-switch-h: 28px;
+    /* Sàn cỡ chữ ô nhập đã dời xuống khối ngay dưới, chỗ nó phủ được cả ba
+       cửa. Để lại một bản riêng ở đây thì buồng lái có hai dòng luật cho
+       cùng một con số, và người sửa sau phải đoán dòng nào đang ăn. */
+  }
+}
+
+/* SÀN CỠ CHỮ Ô NHẬP, cả ba cửa. Khối ngay trên chỉ đặt sàn cho buồng lái, và
+   đó là một lỗ hổng ĐO ĐƯỢC: `--kt-input-font: var(--kt-font-ui)` khai trong
+   khối `:root`, nên nó được GIẢI NGAY TẠI `<html>` bằng cỡ chữ của `:root`
+   rồi kế thừa xuống dưới dạng giá trị ĐÃ TÍNH. Hồ sơ mật độ sống trên
+   `<body>`, nên nó đổi `--kt-font-ui` mà không kéo `--kt-input-font` theo.
+   Đo ngày 03/09: cửa thợ khai mười bảy điểm và chạy MƯỜI LĂM, cửa khách mười
+   lăm. Buồng lái thoát nạn chỉ vì khối trên khai đè một con số phẳng cho
+   riêng nó, tức nó được chữa mà cái gốc thì không.
+
+   Dưới mười sáu điểm thì Safari trên iPhone tự phóng to trang khi chạm vào ô,
+   và từ giây ấy khung nhìn hẹp hơn khung bố cục: trang trượt ngang, mất chữ
+   đầu dòng, thanh trên phủ một phần, kể cả thứ khai `fixed`. Không lỗi nào
+   nổ. Đúng bệnh của buồng lái ở mục 97, chỉ khác chỗ đứng.
+
+   Khai lại trên CHÍNH bộ chọn mang hồ sơ để `var()` giải đúng chỗ, và bọc
+   `max()` để hồ sơ nào muốn to hơn thì vẫn được to hơn: cửa thợ về mười bảy
+   đúng ý hồ sơ `touch`, cửa khách và buồng lái lên đúng sàn. Khối này chỉ ăn
+   trên thiết bị chạm, nên máy bàn không lệch một điểm ảnh nào. */
+@media (pointer: coarse) {
+  :root, [data-kt-density], .kt-mode-khach, .kt-mode-ktv, .kt-mode-admin {
+    --kt-input-font: max(16px, var(--kt-font-ui));
+  }
+}
+
+/* Trần ô ở khung HẸP. Buồng lái trên màn 1280px chỉ còn 954px cho bảng, và ở
+   đó một ô 280px là gần một phần ba khung: bảng bảy tám cột vẫn tràn dù không
+   cột nào phình. Trần là thứ phải co theo chỗ có, không phải một con số. */
+@media (max-width: 1439px) {
+  [data-kt-density="compact"], .kt-mode-admin { --kt-cell-max: 220px; }
+}
+/* Buồng lái dùng nền trắng để tương phản tối đa: nó là bảng số dày đặc,
+   và ở đó mọi thứ đều nằm trong bảng có viền nên nền không phải gánh việc
+   tách khối.
+
+   CỬA THỢ ĐÃ TRẢ VỀ NỀN KEM (20/08). Lý do cũ — "tương phản tối đa" —
+   nghe đúng mà thực tế ngược lại: bề mặt thẻ của hệ LÀ màu trắng, nên
+   trắng-trên-trắng làm mọi cái thẻ tan vào nền và cả màn dẹt thành một tờ
+   giấy. Tương phản là chuyện GIỮA hai lớp, không phải chuyện của một màu
+   đứng một mình. Nền kem `--kt-cream-75` với bề mặt trắng chính là cặp
+   mà hệ đã cân sẵn. */
+.kt-mode-admin { --kt-bg-canvas: var(--kt-bg-canvas-plain); }
+
+/* ═══ CHỦ ĐỀ TỐI · BẢN THỬ, mặc định TẮT ═══
+   Hiến pháp §5 ghi "một chủ đề sáng, không có chế độ tối, đó là quyết
+   định". Khối này KHÔNG lật quyết định ấy: nó chỉ mọc khi có người đặt
+   `data-kt-theme="toi"` lên chính thẻ đang mang `data-kt-density`, và
+   không app nào đặt thuộc tính đó trừ khi người dùng tự bật.
+
+   Ba luật của khối, đo trước khi chọn chứ không chọn theo cảm giác:
+
+   1. NỀN TRUNG TÍNH, không phải màu thương hiệu. Bản đầu 26/08 lấy navy
+      làm nền và sai đúng chỗ này: bão hoà 47% tới 100% trải hết màn thì
+      rung mắt, và điểm nhấn cam chìm nghỉm giữa nó. Thang than giữ bão
+      hoà 5-10%. Tấm SÁNG HƠN bàn, ngược chủ đề sáng: bàn ↔ tấm 1,14 ·
+      tấm ↔ nổi 1,12 · nổi ↔ viền 1,23.
+   2. Tấm tách khỏi bàn bằng VIỀN, không bằng bóng. Bóng là vệt tối, mà
+      trên nền tối thì vệt tối vô hình · giữ bóng ở đây là giữ một cơ
+      chế đã chết rồi tưởng mình còn có nó.
+   3. Cam sáng đổi VAI. Ở chủ đề sáng nó là màu CHỈ BÁO và bị cấm làm
+      nền cho chữ (trắng trên nó chỉ 2,78). Ở đây nó làm CHỮ trên nền
+      than: accent-300 đạt 10,93 trên tấm, accent-400 đạt 8,16. Luật cũ
+      vẫn nguyên, chỉ là nền đã đổi nên vế cấm không còn chỗ áp.
+
+   Chữ trên tấm than-900, đo được: kem-75 16,21 · than-200 11,20 ·
+   than-300 7,64 · than-400 4,94 · cam-300 10,93 · tất cả trên ngưỡng
+   4,5 của thân bài. Trắng tinh CỐ Ý không dùng: nó chói trên nền tối và
+   làm nét chữ nở ra, kem-75 đã thừa tương phản mà đọc dịu hơn hẳn. */
+[data-kt-theme="toi"] {
+  /* Bàn và bề mặt */
+  --kt-bg-canvas: var(--kt-than-975);
+  --kt-bg-canvas-plain: var(--kt-than-975);
+  --kt-bg-subtle: var(--kt-than-800);
+  --kt-bg-inverse: var(--kt-cream-75);
+  --kt-surface: var(--kt-than-900);
+  --kt-surface-sunken: var(--kt-than-950);
+  --kt-surface-accent: var(--kt-than-800);
+  --kt-surface-disabled: var(--kt-than-950);
+  --kt-surface-overlay: var(--kt-than-800);
+  /* KHÔNG đảo thành khối kem. Ở chủ đề sáng, `surface-inverse` là dải
+     navy đặc nổi bật trên nền sáng · phép đảo máy móc cho ra một mảng
+     kem 97% sáng trải hết bề ngang màn hình, và trong tối thì đó là đèn
+     pha chiếu vào mặt. Vai của nó là KHỐI NỔI BẬT, nên ở đây nó nổi bật
+     bằng bậc bề mặt cao nhất cộng nét cam, không bằng độ chói.
+     Nút chính thì vẫn kem: nó nhỏ, và một điểm sáng nhỏ là điểm nhấn. */
+  --kt-surface-inverse: var(--kt-than-800);
+  /* Tách khối bằng viền, xem luật 2 */
+  --kt-surface-lift: none;
+  --kt-surface-edge-w: var(--kt-border-w-hair);
+  --kt-surface-edge: var(--kt-than-700);
+
+  /* Chữ */
+  --kt-text-primary: var(--kt-cream-75);
+  --kt-text-secondary: var(--kt-than-200);
+  --kt-text-tertiary: var(--kt-than-300);
+  --kt-text-disabled: var(--kt-than-500);
+  --kt-text-placeholder: var(--kt-than-500);
+  --kt-text-brand: var(--kt-cream-75);
+  --kt-text-accent: var(--kt-accent-300);
+  --kt-text-link: var(--kt-accent-300);
+  --kt-text-link-hover: var(--kt-accent-200);
+  --kt-text-on-accent: var(--kt-than-975);
+  --kt-text-on-inverse: var(--kt-cream-75);
+  --kt-on-inverse-fill: var(--kt-cream-75);
+  --kt-on-inverse-ink: var(--kt-than-975);
+  --kt-text-on-inverse-muted: var(--kt-than-300);
+
+  /* Viền */
+  --kt-border-subtle: var(--kt-than-700);
+  --kt-border-default: var(--kt-than-600);
+  --kt-border-strong: var(--kt-than-500);
+  --kt-border-accent: var(--kt-accent-400);
+  --kt-border-focus: var(--kt-accent-300);
+  --kt-border-error: var(--kt-danger-400);
+
+  /* Nút chính: ở chủ đề sáng là khối navy trên nền sáng, ở đây đảo lại */
+  --kt-action-fill: var(--kt-cream-75);
+  --kt-action-fill-hover: var(--kt-cream-200);
+  --kt-action-fill-active: var(--kt-cream-300);
+  --kt-action-indicator: var(--kt-accent-400);
+  --kt-action-quiet-fg: var(--kt-cream-200);
+
+  /* Bốn họ ngữ nghĩa: nền xuống bậc sâu nhất, chữ lên bậc sáng */
+  --kt-success-bg: var(--kt-success-950); --kt-success-fg: var(--kt-success-300);
+  --kt-success-border: var(--kt-success-700); --kt-success-fill: var(--kt-success-400);
+  --kt-info-bg: var(--kt-info-950); --kt-info-fg: var(--kt-info-300);
+  --kt-info-border: var(--kt-info-700); --kt-info-fill: var(--kt-info-400);
+  --kt-danger-bg: var(--kt-danger-950); --kt-danger-fg: var(--kt-danger-300);
+  --kt-danger-border: var(--kt-danger-700); --kt-danger-fill: var(--kt-danger-400);
+  --kt-warning-bg: var(--kt-warning-950); --kt-warning-fg: var(--kt-warning-300);
+  --kt-warning-border: var(--kt-warning-700); --kt-warning-fill: var(--kt-warning-400);
+
+  /* Bóng đổi VAI. Sáu bóng của hệ đều là navy-950 pha trong suốt · mà
+     navy-950 CHÍNH LÀ mặt bàn ở đây, nên để nguyên là sáu bóng vô hình
+     và mọi khối mất đường tách. Ở chủ đề tối bóng làm việc bằng vành
+     sáng (spread 1px) thay vì vệt tối, và những bậc cao mới thêm vệt
+     tối thật để tấm nổi nổi lên khỏi bàn. Giữ đúng sáu tên nên không
+     chỗ gọi nào phải sửa. */
+  --kt-shadow-xs: 0 0 0 1px color-mix(in srgb, var(--kt-than-700) 70%, transparent);
+  --kt-shadow-sm: 0 0 0 1px color-mix(in srgb, var(--kt-than-700) 85%, transparent);
+  --kt-shadow-md: 0 0 0 1px var(--kt-than-700),
+                  0 4px 14px color-mix(in srgb, var(--kt-than-975) 65%, transparent);
+  --kt-shadow-lg: 0 0 0 1px var(--kt-than-600),
+                  0 12px 32px color-mix(in srgb, var(--kt-than-975) 80%, transparent);
+  --kt-shadow-sheet: 0 -1px 0 var(--kt-than-700),
+                  0 -8px 28px color-mix(in srgb, var(--kt-than-975) 80%, transparent);
+}
+
+/* ==========================================================================
+   LỚP DA CỔNG KHÁCH — .kt-mode-khach
+   Đổi 20/08/2026, anh Vũ quyết. Hiến pháp §5b.
+
+   `.kt-mode-khach` từng chỉ là bút danh cũ của hồ sơ `comfortable`. Nay nó
+   là CÔNG TẮC LỚP DA, và hai thứ đó cố ý tách nhau: mật độ trả lời câu
+   "ngón tay to bao nhiêu", lớp da trả lời câu "người đọc màn này là ai".
+   Một công cụ nội bộ vẫn có thể muốn mật độ thoáng mà không muốn hình dáng
+   của một sản phẩm tiêu dùng.
+
+   Vì sao cổng khách khác hai cổng kia: thợ và buồng lái là CÔNG CỤ LÀM
+   VIỆC, và với chúng góc vuông cùng viền navy 2px đọc ra là nghiêm túc,
+   dày đặc thông tin, không phí một điểm ảnh nào. Cư dân thì không phải
+   người vận hành. Với họ, cùng thứ hình khối ấy đọc ra là BIỂU MẪU HÀNH
+   CHÍNH — thứ người ta phải điền, không phải thứ người ta chọn mua.
+
+   Khối này CHỈ đụng hình khối và độ cao. Nó không đổi một màu thương hiệu
+   nào, không đổi một khoá nào, không đổi một chữ nào. Ba cổng vẫn là một
+   thương hiệu, và ai cũng nhận ra điều đó ngay từ màu.
+   ==========================================================================*/
+.kt-mode-khach {
+  /* Hình khối. Bậc chọn theo VAI của bề mặt, không theo cỡ của nó:
+     ô điều khiển 8, thứ bấm được 12, tấm chứa nội dung 16, tấm trượt 20.
+     Đi quá 20 thì bắt đầu đọc ra như đồ chơi, và niềm tin là thứ hệ này
+     bán trước cả dịch vụ. */
+  --kt-radius-sm: 8px;
+  --kt-radius-md: 12px;
+  --kt-radius-lg: 16px;
+  --kt-radius-sheet: 20px;
+  --kt-radius-pill: var(--kt-radius-full);
+
+  /* Độ cao HAI LỚP: một bóng tiếp xúc rất gần và đặc, một bóng môi trường
+     xa và loãng. Bóng một lớp là thứ làm giao diện đọc ra rẻ tiền — nó
+     không giống cách ánh sáng thật rơi lên vật thật. Vẫn pha theo mực nền
+     navy chứ không pha xám, nên bóng không bao giờ bẩn trên nền kem. */
+  --kt-shadow-xs: 0 1px 2px color-mix(in srgb, var(--kt-brand-950) 6%, transparent);
+  --kt-shadow-sm: 0 1px 2px color-mix(in srgb, var(--kt-brand-950) 6%, transparent),
+                  0 2px 8px color-mix(in srgb, var(--kt-brand-950) 6%, transparent);
+  --kt-shadow-md: 0 2px 4px color-mix(in srgb, var(--kt-brand-950) 6%, transparent),
+                  0 8px 24px color-mix(in srgb, var(--kt-brand-950) 10%, transparent);
+  --kt-shadow-lg: 0 4px 8px color-mix(in srgb, var(--kt-brand-950) 8%, transparent),
+                  0 20px 48px color-mix(in srgb, var(--kt-brand-950) 14%, transparent);
+  --kt-shadow-sheet: 0 -2px 8px color-mix(in srgb, var(--kt-brand-950) 8%, transparent),
+                     0 -16px 48px color-mix(in srgb, var(--kt-brand-950) 16%, transparent);
+
+  /* Mép bề mặt. Viền navy 2px thôi gánh việc tách khối, độ cao gánh thay.
+     Giữ lại một sợi tóc màu kem đậm vì màn hình rẻ và chế độ tương phản
+     cao đều làm bóng biến mất, và lúc đó thẻ vẫn phải còn là thẻ. */
+  --kt-surface-edge-w: var(--kt-border-w-hair);
+  --kt-surface-edge: var(--kt-border-subtle);
+  --kt-surface-lift: var(--kt-shadow-sm);
+}
+
+/* Tương phản cao: bóng không tồn tại, nên mép phải quay lại gánh việc. */
+@media (prefers-contrast: more) {
+  .kt-mode-khach {
+    --kt-surface-edge-w: var(--kt-border-w);
+    --kt-surface-edge: var(--kt-border-strong);
+    --kt-surface-lift: none;
+  }
+}
+
+/* ==========================================================================
+   NỀN CHUNG
+   ==========================================================================*/
+.kt-app {
+  margin: 0;
+  font-family: var(--kt-font-sans);
+  font-size: var(--kt-type-body-size);
+  line-height: var(--kt-type-body-leading);
+  color: var(--kt-text-primary);
+  background: var(--kt-bg-canvas);
+  -webkit-text-size-adjust: 100%;
+  text-wrap: pretty;
+  font-variant-numeric: proportional-nums;
+}
+.kt-app *, .kt-app *::before, .kt-app *::after { box-sizing: border-box; }
+.kt-app h1, .kt-app h2, .kt-app h3, .kt-app h4 { margin: 0; font-weight: var(--kt-weight-bold); line-height: var(--kt-leading-tight); letter-spacing: var(--kt-tracking-tight); }
+.kt-app h1 { font-size: var(--kt-type-headline-size); }
+.kt-app h2 { font-size: var(--kt-type-title-size); }
+.kt-app h3 { font-size: var(--kt-type-subtitle-size); }
+.kt-app p { margin: 0; max-width: var(--kt-measure); }
+/* `:not(.kt-btn)` KHÔNG phải để cho đẹp: một liên kết đội lốt nút phải
+   trông như nút, mà hai dòng này mang độ ưu tiên (0,1,1) trong khi
+   `.kt-btn` và mọi biến thể của nó chỉ (0,1,0). Luật của nút vì thế
+   thua trong im lặng, và nó thua CẢ HAI thứ:
+     · `text-decoration: none` của `.kt-btn` → nút đội gạch chân;
+     · `color` của từng biến thể → `.kt-btn--primary` khai
+       `--kt-text-on-accent` mà nhận `--kt-text-link`, tức sắc navy nhạt
+       của `--kt-brand-800` nằm trên nền navy đậm của `--kt-action-fill`.
+       Tương phản khoảng 1,4 lần: cái nút chính vẫn ở đó, vẫn bấm được,
+       chỉ là đọc không ra.
+       (Hai màu ấy CỐ Ý gọi bằng tên token chứ không gõ mã: cổng 5 đo mã
+       màu trên trọn tệp, kể cả trong chú thích, và bản đầu của khối này
+       đã làm nó đỏ bằng đúng lời giải thích của mình.)
+   Cùng họ bẫy `#83` (`.kt-app p{margin:0}` xoá sạch lề khai trên lớp
+   trần). Cửa khách không lộ vì nó có một dòng CSS riêng đặt
+   `color: inherit` cho mọi liên kết; cửa thợ và buồng lái không có, và
+   cả hai đang chạy như thế trên live.
+   Vá bằng cách khai đè `a.kt-btn` thì chữa được gạch chân mà bỏ sót
+   màu, tức để lại nửa quả mìn. Chữa ở PHẠM VI: nút không phải là liên
+   kết văn bản, nên nó đứng ngoài luật liên kết văn bản. */
+/* `:where()` chứ không `:not(.kt-btn)` trần, và đây là nửa thứ hai của
+   cùng một bài học. `:not(.kt-btn)` tính độ ưu tiên như một lớp, nên nó
+   nâng luật này từ (0,1,1) lên (0,2,1) — và luật vừa được chữa liền đi
+   đè lên những chỗ ghi đè hai lớp vốn đang đúng: đo được ngay ở
+   `.kt-app .ax-brand` (0,2,0), cái logo apex khai `text-decoration:none`
+   mà vẫn đội gạch chân. `:where()` có độ ưu tiên bằng 0, nên loại được
+   cái nút ra mà không xê dịch chỗ đứng của luật trong thang ưu tiên. */
+.kt-app a:not(:where(.kt-btn)), .kt-link { color: var(--kt-text-link); text-decoration: underline; text-underline-offset: 2px; text-decoration-thickness: 1px; }
+.kt-app a:not(:where(.kt-btn)):hover, .kt-link:hover { color: var(--kt-text-link-hover); text-decoration-thickness: 2px; }
+.kt-app ::selection { background: var(--kt-accent-200); color: var(--kt-text-brand); }
+.kt-app :focus-visible { outline: var(--kt-focus-ring-w) solid var(--kt-border-focus); outline-offset: var(--kt-focus-ring-offset); }
+.kt-app [hidden] { display: none !important; }
+
+/* Vai chữ dùng được như lớp tiện ích. Đặt trong .kt-app để thắng kiểu thẻ mặc định. */
+.kt-app .kt-display  { font-size: var(--kt-type-display-size);  line-height: var(--kt-type-display-leading);  font-weight: var(--kt-type-display-weight);  letter-spacing: var(--kt-type-display-tracking); }
+.kt-app .kt-headline { font-size: var(--kt-type-headline-size); line-height: var(--kt-type-headline-leading); font-weight: var(--kt-type-headline-weight); letter-spacing: var(--kt-type-headline-tracking); }
+.kt-app .kt-title    { font-size: var(--kt-type-title-size);    line-height: var(--kt-type-title-leading);    font-weight: var(--kt-type-title-weight); }
+.kt-app .kt-subtitle { font-size: var(--kt-type-subtitle-size); line-height: var(--kt-type-subtitle-leading); font-weight: var(--kt-type-subtitle-weight); }
+.kt-app .kt-body     { font-size: var(--kt-type-body-size);     line-height: var(--kt-type-body-leading); }
+.kt-app .kt-label-text { font-size: var(--kt-type-label-size);  line-height: var(--kt-type-label-leading);  font-weight: var(--kt-type-label-weight); color: var(--kt-text-secondary); }
+.kt-app .kt-caption  { font-size: var(--kt-type-caption-size);  line-height: var(--kt-type-caption-leading); color: var(--kt-text-tertiary); }
+.kt-app .kt-eyebrow, .kt-app .kt-overline { font-size: var(--kt-type-overline-size); line-height: var(--kt-type-overline-leading); font-weight: var(--kt-type-overline-weight); letter-spacing: var(--kt-type-overline-tracking); text-transform: uppercase; color: var(--kt-text-tertiary); }
+
+/* Bố cục cơ bản */
+.kt-stack { display: flex; flex-direction: column; gap: var(--kt-gap); }
+/* Hàng ngang gãy được. Đi CẶP với `flex-shrink: 0` của nút: nút thôi nhường
+   chỗ thì phần dôi ra phải có nơi đi, và nơi đúng là dòng thứ hai. Cho HÀNG
+   gãy chứ không cho NHÃN gãy — chỗ gãy sẽ ở giữa hai thứ khác nhau, không ở
+   giữa hai chữ của cùng một câu lệnh. Luật chỉ ăn khi hàng ĐÃ tràn, tức chỉ
+   ăn đúng chỗ đang hỏng. */
+.kt-row { display: flex; align-items: center; gap: var(--kt-space-2); flex-wrap: wrap; }
+.kt-between { display: flex; align-items: center; justify-content: space-between; gap: var(--kt-space-2); flex-wrap: wrap; }
+.kt-rule { height: 0; border: 0; border-top: var(--kt-border-w) solid var(--kt-border-strong); margin: 0; }
+.kt-divider { height: 0; border: 0; border-top: var(--kt-border-w-hair) solid var(--kt-border-subtle); margin: 0; }
+.kt-sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.kt-skiplink { position: absolute; left: -9999px; top: 0; z-index: var(--kt-z-tooltip); background: var(--kt-surface-inverse); color: var(--kt-text-on-inverse); padding: var(--kt-space-3) var(--kt-space-4); font-weight: var(--kt-weight-bold); }
+.kt-skiplink:focus { left: var(--kt-space-2); top: var(--kt-space-2); }
+
+/* Biểu tượng, sprite icons.svg trong repo.
+   Đầu nét CẮT PHẲNG và góc NHỌN, không bo. Hệ này bo góc bằng 0 ở mọi bậc,
+   nên biểu tượng đầu tròn góc tròn tuy lấy đúng nguồn vẫn đứng lệch khỏi
+   phần còn lại của màn. `stroke-miterlimit: 2` cắt gai ở những góc quá nhọn
+   (tia sét, ngôi sao) thành vát, chứ mặc định 4 thì gai chọc ra ngoài khung.
+   BẪY: sáu hình vẽ CHẤM bằng thủ thuật đoạn dài 0,01 và trông thấy được chỉ
+   nhờ đầu nét tròn. Đổi sang `butt` là chấm biến mất sạch, không lỗi, không
+   log · nên chúng khai `stroke-linecap="square"` ngay trên path trong sprite
+   (thuộc tính trên chính phần tử thắng giá trị kế thừa từ đây), và ra đúng
+   ô vuông 2×2, hợp hệ hơn cả chấm tròn cũ. */
+.kt-icon { width: var(--kt-icon-size); height: var(--kt-icon-size); flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 2; }
+.kt-icon--sm { width: 16px; height: 16px; }
+.kt-icon--lg { width: 28px; height: 28px; }
+.kt-icon--xl { width: 36px; height: 36px; }
+.kt-icon-tile { border-radius: var(--kt-radius-md); display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; flex: none; background: var(--kt-surface-accent); color: var(--kt-text-brand); border: var(--kt-border-w) solid var(--kt-border-strong); }
+.kt-spin { animation: kt-spin 900ms linear infinite; }
+@keyframes kt-spin { to { transform: rotate(360deg); } }
+
+/* ==========================================================================
+   HÀNH ĐỘNG — nút, nhóm nút, nút biểu tượng
+   Nút luôn: nền đầy hoặc viền 2px mực, nhãn 700, kèm biểu tượng, không có
+   nhãn nổi phía trên. Ô nhập luôn: nền lõm, gạch chân dày, có nhãn phía trên.
+   Hai họ này không được nhìn giống nhau. Xem mục Ô NHẬP.
+   ==========================================================================*/
+.kt-btn {
+  --kt-btn-h: var(--kt-control-h);
+  position: relative;
+  display: inline-flex; align-items: center; justify-content: flex-start; gap: var(--kt-space-2);
+  min-height: var(--kt-btn-h); min-width: var(--kt-btn-h);
+  padding: var(--kt-space-2) var(--kt-control-px);
+  font: inherit; font-size: var(--kt-font-ui); font-weight: var(--kt-weight-bold); letter-spacing: var(--kt-tracking-wide);
+  text-align: left; text-decoration: none; white-space: nowrap;
+  flex-shrink: 0;
+  border: var(--kt-border-w) solid transparent; border-radius: var(--kt-radius-md);
+  cursor: pointer; transition: var(--kt-transition-color);
+  isolation: isolate;
+}
+/* Lớp trạng thái dùng chung, một cơ chế cho mọi biến thể */
+.kt-btn::after { content: ""; position: absolute; inset: 0; background: var(--kt-state-ink); opacity: 0; transition: opacity var(--kt-dur-fast) var(--kt-ease-standard); z-index: -1; }
+.kt-btn:hover::after { opacity: calc(var(--kt-state-hover) / 100%); }
+.kt-btn:active::after { opacity: calc(var(--kt-state-pressed) / 100%); }
+.kt-btn--primary { background: var(--kt-action-fill); color: var(--kt-text-on-accent); border-color: var(--kt-action-fill); --kt-state-ink: var(--kt-black); }
+.kt-btn--secondary { background: var(--kt-surface); color: var(--kt-action-quiet-fg); border-color: var(--kt-border-strong); }
+.kt-btn--ghost { background: transparent; color: var(--kt-action-quiet-fg); border-color: transparent; }
+.kt-btn--danger { background: var(--kt-danger-fill); color: var(--kt-white); border-color: var(--kt-danger-fill); --kt-state-ink: var(--kt-black); }
+.kt-btn--inverse { background: var(--kt-surface-inverse); color: var(--kt-text-on-inverse); border-color: var(--kt-surface-inverse); --kt-state-ink: var(--kt-white); }
+.kt-btn--sm { --kt-btn-h: var(--kt-control-h-sm); font-size: var(--kt-type-label-size); padding: 0 var(--kt-space-3); }
+.kt-btn--lg { --kt-btn-h: var(--kt-control-h-lg); font-size: var(--kt-font-ui-strong); }
+/* Nút chiếm trọn bề ngang: bề ngang là thứ ĐÃ CHO, nên chữ phải gãy bên
+   trong nó. Ngược hẳn nút đứng trong hàng, nơi bề ngang do chính nhãn quyết
+   và một lần gãy dòng luôn là dấu hiệu nút bị bóp sai. */
+.kt-btn--block { display: flex; width: 100%; white-space: normal; text-wrap: balance; flex-shrink: 1; }
+/* Lối thoát có KHAI cho nút đứng trong hàng mà cố ý cho gãy nhãn. Phải khai,
+   không được là mặc định: mặc định gãy thì không ai biết chỗ nào đang hỏng. */
+.kt-btn--wrap { white-space: normal; text-wrap: balance; flex-shrink: 1; min-width: 0; }
+.kt-btn--icon { padding: 0; justify-content: center; }
+.kt-btn--center { justify-content: center; text-align: center; }
+.kt-btn[disabled], .kt-btn[aria-disabled="true"] { opacity: var(--kt-state-disabled-opacity); cursor: not-allowed; }
+.kt-btn[disabled]::after, .kt-btn[aria-disabled="true"]::after { display: none; }
+.kt-btn.is-loading { color: transparent; pointer-events: none; }
+.kt-btn.is-loading::before {
+  content: ""; position: absolute; inset: 0; margin: auto; width: 20px; height: 20px;
+  border-radius: var(--kt-radius-full);
+  border: var(--kt-border-w) solid var(--kt-text-on-accent); border-top-color: transparent;
+  animation: kt-spin 700ms linear infinite;
+}
+.kt-btn--secondary.is-loading::before, .kt-btn--ghost.is-loading::before { border-color: var(--kt-action-quiet-fg); border-top-color: transparent; }
+.kt-btn__trailing { margin-left: auto; }
+
+.kt-btn-group { display: inline-flex; }
+.kt-btn-group > .kt-btn { border-radius: 0; margin-left: calc(var(--kt-border-w) * -1); }
+.kt-btn-group > .kt-btn:first-child { margin-left: 0; }
+.kt-btn-group > .kt-btn:focus-visible { z-index: 1; }
+
+/* Gợi ý bàn phím */
+.kt-kbd { border-radius: var(--kt-radius-sm); font-family: ui-monospace, monospace; font-size: var(--kt-type-caption-size); padding: 1px var(--kt-space-1); border: var(--kt-border-w-hair) solid var(--kt-border-default); background: var(--kt-surface-sunken); color: var(--kt-text-secondary); }
+
+/* ==========================================================================
+   Ô NHẬP VÀ LỰA CHỌN
+   Hình thức riêng: nền lõm, viền mảnh, gạch chân dày ba pixel. Không bao giờ
+   trông giống nút.
+   ==========================================================================*/
+.kt-form { display: flex; flex-direction: column; gap: var(--kt-gap); }
+.kt-fieldset { border: 0; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--kt-pad-tight); }
+.kt-legend { padding: 0; font-size: var(--kt-type-label-size); font-weight: var(--kt-weight-bold); letter-spacing: var(--kt-tracking-caps); text-transform: uppercase; color: var(--kt-text-tertiary); }
+.kt-field { display: flex; flex-direction: column; gap: var(--kt-space-2); }
+.kt-field > label { font-size: var(--kt-type-label-size); font-weight: var(--kt-weight-semibold); color: var(--kt-text-secondary); }
+.kt-required { color: var(--kt-danger-fg); }
+.kt-input, .kt-select, .kt-textarea {
+  font: inherit; font-size: var(--kt-input-font); color: var(--kt-text-primary);
+  min-height: var(--kt-control-h); width: 100%;
+  padding: var(--kt-space-2) var(--kt-pad-tight);
+  background: var(--kt-surface-sunken);
+  border: var(--kt-border-w-hair) solid var(--kt-border-default);
+  border-bottom: var(--kt-border-w-thick) solid var(--kt-slate-400);
+  border-radius: var(--kt-radius-md);
+  transition: var(--kt-transition-color);
+}
+.kt-textarea { min-height: calc(var(--kt-control-h) * 2); resize: vertical; }
+/* Ô có bề rộng NỘI TẠI (trình duyệt tự vẽ mặt số kèm biểu tượng lịch, nội
+   dung không bao giờ dài thêm) đứng trong hàng ngang thì thôi nuốt cả hàng.
+   `width: 100%` đúng cho ô đứng trong cột nhãn-trên-ô; trong hàng ngang nó
+   chiếm hết chỗ rồi ép mọi thứ đứng cạnh, và thứ chịu trận là cái nút. Ô chữ
+   tự do KHÔNG nằm trong luật này: ở đó giãn đầy mới đúng. */
+.kt-row > .kt-input:is([type="month"], [type="date"], [type="time"], [type="week"]),
+.kt-between > .kt-input:is([type="month"], [type="date"], [type="time"], [type="week"]) {
+  width: auto; flex: 0 0 auto;
+}
+.kt-input:hover, .kt-select:hover, .kt-textarea:hover { border-bottom-color: var(--kt-brand-700); }
+.kt-input:focus, .kt-select:focus, .kt-textarea:focus { background: var(--kt-surface); border-bottom-color: var(--kt-text-brand); outline: none; }
+.kt-input:focus-visible, .kt-select:focus-visible, .kt-textarea:focus-visible { outline: var(--kt-focus-ring-w) solid var(--kt-border-focus); outline-offset: var(--kt-focus-ring-offset); }
+.kt-input::placeholder, .kt-textarea::placeholder { color: var(--kt-text-placeholder); }
+.kt-input[disabled], .kt-select[disabled], .kt-textarea[disabled] { background: var(--kt-surface-disabled); color: var(--kt-text-disabled); border-bottom-color: var(--kt-border-default); cursor: not-allowed; }
+.kt-input[readonly] { background: transparent; border-bottom-style: dotted; }
+.kt-select { appearance: none; padding-right: var(--kt-space-8);
+  background-image: linear-gradient(45deg, transparent 48%, currentColor 48%, currentColor 58%, transparent 58%),
+                    linear-gradient(-45deg, transparent 48%, currentColor 48%, currentColor 58%, transparent 58%);
+  background-size: 9px 9px, 9px 9px; background-position: right 18px center, right 11px center; background-repeat: no-repeat; }
+.kt-field.is-error .kt-input, .kt-field.is-error .kt-select, .kt-field.is-error .kt-textarea { border-color: var(--kt-border-error); border-bottom-color: var(--kt-border-error); }
+.kt-field-hint { font-size: var(--kt-type-label-size); color: var(--kt-text-tertiary); }
+.kt-field-error { display: flex; gap: var(--kt-space-1); font-size: var(--kt-type-label-size); font-weight: var(--kt-weight-semibold); color: var(--kt-danger-fg); }
+.kt-field-error::before { content: "✕"; }
+.kt-input-group { display: flex; align-items: stretch; }
+.kt-input-group__addon { border-radius: var(--kt-radius-md); display: inline-flex; align-items: center; padding: 0 var(--kt-pad-tight); font-size: var(--kt-font-ui); color: var(--kt-text-secondary); background: var(--kt-surface-accent); border: var(--kt-border-w-hair) solid var(--kt-border-default); border-right: 0; }
+
+/* Điền thông minh: câu đọc lại số tiền, và bộ chọn nhanh thực thể.
+   Luật ở HE-THIET-KE.md §13. Câu đọc lại KHÔNG phải chú thích trang trí,
+   nó là lưới an toàn cho lỗi thừa một số 0, nên nó không được nhạt tới
+   mức người ta thôi liếc vào.                                              */
+.kt-nhap__doc { display: block; margin-top: var(--kt-space-1); font-size: var(--kt-type-label-size); line-height: var(--kt-leading-snug); color: var(--kt-text-secondary); }
+.kt-nhap__doc:empty { display: none; }
+.kt-nhap__doc--canh { color: var(--kt-warning-fg); font-weight: var(--kt-weight-semibold); }
+
+.kt-chon { position: relative; }
+.kt-chon__ds { border-radius: var(--kt-radius-md); position: absolute; z-index: var(--kt-z-popover); inset-inline: 0; top: 100%; margin-top: var(--kt-space-1);
+  max-height: 264px; overflow-y: auto; overscroll-behavior: contain;
+  background: var(--kt-surface-overlay); border: var(--kt-border-w) solid var(--kt-border-strong); box-shadow: var(--kt-shadow-md); }
+.kt-chon__muc { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; gap: 0 var(--kt-space-2);
+  padding: var(--kt-space-2) var(--kt-pad-tight); min-height: var(--kt-tap-min); cursor: pointer; border-bottom: var(--kt-border-w-hair) solid var(--kt-border-subtle); }
+.kt-chon__muc:last-child { border-bottom: 0; }
+.kt-chon__muc > b { font-size: var(--kt-font-ui); font-weight: var(--kt-weight-semibold); color: var(--kt-text-primary); overflow-wrap: anywhere; }
+.kt-chon__phu { grid-column: 1; font-size: var(--kt-type-label-size); color: var(--kt-text-tertiary); overflow-wrap: anywhere; }
+.kt-chon__ma { grid-row: 1 / span 2; font-family: var(--kt-font-mono); font-size: var(--kt-type-label-size); color: var(--kt-text-tertiary); white-space: nowrap; }
+/* Mục đang chọn phải đọc ra được cả khi lọc xám: đổi nền THÌ đổi luôn
+   viền trái, vì chỉ đổi nền là một tín hiệu duy nhất và nó là màu.       */
+.kt-chon__muc.is-chon, .kt-chon__muc:hover { background: var(--kt-surface-accent); box-shadow: inset 3px 0 0 var(--kt-brand-900); }
+.kt-chon__trong { padding: var(--kt-space-2) var(--kt-pad-tight); font-size: var(--kt-type-label-size); color: var(--kt-text-tertiary); }
+/* Dòng xác nhận: hiện RA NGƯỜI vừa chọn, không hiện lại cái mã. Mã nào
+   cũng giống mã nào, nên chọn nhầm bằng mã thì không có gì tự lộ.         */
+.kt-chon__da { display: block; margin-top: var(--kt-space-1); padding-inline-start: var(--kt-space-2); box-shadow: inset 3px 0 0 var(--kt-brand-900);
+  font-size: var(--kt-type-label-size); font-weight: var(--kt-weight-semibold); color: var(--kt-text-primary); }
+
+/* Hộp kiểm, ô chọn một, công tắc: đều là ô vuông mực, khác nhau ở dấu bên trong.
+   Kích thước đi theo mật độ qua --kt-choice-size, nhãn căn giữa theo ô.        */
+.kt-check, .kt-radio { display: inline-flex; align-items: center; gap: var(--kt-choice-gap); min-height: var(--kt-tap-min); font-size: var(--kt-font-ui); line-height: var(--kt-leading-snug); cursor: pointer; }
+.kt-check > input, .kt-radio > input { appearance: none; margin: 0; flex: none; width: var(--kt-choice-size); height: var(--kt-choice-size); background: var(--kt-surface); border: var(--kt-border-w) solid var(--kt-border-strong); cursor: pointer; transition: var(--kt-transition-color); display: grid; place-content: center; }
+.kt-radio > input { border-radius: var(--kt-radius-full); }
+.kt-check > input:checked { background: var(--kt-action-fill); }
+.kt-check > input:checked::after { content: ""; display: block; width: calc(var(--kt-choice-size) * 0.5); height: calc(var(--kt-choice-size) * 0.25); border-left: var(--kt-border-w) solid var(--kt-text-on-accent); border-bottom: var(--kt-border-w) solid var(--kt-text-on-accent); transform: translateY(-12%) rotate(-45deg); }
+.kt-check > input:indeterminate { background: var(--kt-action-fill); }
+.kt-check > input:indeterminate::after { content: ""; display: block; width: calc(var(--kt-choice-size) * 0.5); height: var(--kt-border-w); background: var(--kt-white); }
+.kt-radio > input:checked { border-width: calc(var(--kt-choice-size) * 0.28); border-color: var(--kt-text-brand); }
+.kt-check > input[disabled], .kt-radio > input[disabled] { opacity: var(--kt-state-disabled-opacity); cursor: not-allowed; }
+.kt-check--top, .kt-radio--top { align-items: flex-start; }
+.kt-check--top > input, .kt-radio--top > input { margin-top: calc((var(--kt-font-ui) * var(--kt-leading-snug) - var(--kt-choice-size)) / 2); }
+
+.kt-switch { display: inline-flex; align-items: center; gap: var(--kt-choice-gap); min-height: var(--kt-tap-min); font-size: var(--kt-font-ui); cursor: pointer; }
+.kt-switch > input { appearance: none; margin: 0; flex: none; position: relative; width: var(--kt-switch-w); height: var(--kt-switch-h); background: var(--kt-surface-sunken); border: var(--kt-border-w) solid var(--kt-border-strong); cursor: pointer; transition: background var(--kt-dur-normal) var(--kt-ease-standard); }
+.kt-switch > input::after { content: ""; position: absolute; top: 2px; left: 2px; width: calc(var(--kt-switch-h) - 8px); height: calc(var(--kt-switch-h) - 8px); background: var(--kt-action-fill); transition: transform var(--kt-dur-normal) var(--kt-ease-standard); }
+.kt-switch > input:checked { background: var(--kt-success-fill); border-color: var(--kt-success-fill); }
+.kt-switch > input:checked::after { transform: translateX(calc(var(--kt-switch-w) - var(--kt-switch-h))); background: var(--kt-white); }
+.kt-switch > input[disabled] { opacity: var(--kt-state-disabled-opacity); cursor: not-allowed; }
+
+/* Nhóm phân đoạn và chip lựa chọn */
+/* `overflow: hidden` là điều kiện của chính cái bo góc. Nút bên trong
+   mang nền đặc và KHÔNG bo góc riêng · ở hai cổng bo góc 0 thì không ai
+   thấy, nhưng ở cổng khách (thang mềm, `--kt-radius-md` 12px) thì góc
+   vuông của nút đầu và nút cuối lòi ra ngoài đường bo của khung. Một
+   thành phần khai bo góc mà không cắt con là thành phần chỉ đúng ở hồ sơ
+   đang để bo góc bằng không. */
+.kt-seg { border-radius: var(--kt-radius-md); display: inline-flex; overflow: hidden; border: var(--kt-border-w) solid var(--kt-border-strong); background: var(--kt-surface); }
+.kt-seg > .kt-seg__opt { font: inherit; font-size: var(--kt-font-ui); font-weight: var(--kt-weight-semibold); min-height: var(--kt-control-h); padding: 0 var(--kt-control-px); background: transparent; color: var(--kt-action-quiet-fg); border: 0; border-left: var(--kt-border-w) solid var(--kt-border-strong); cursor: pointer; }
+.kt-seg > .kt-seg__opt:first-child { border-left: 0; }
+.kt-seg > .kt-seg__opt:hover { background: color-mix(in srgb, var(--kt-state-ink) var(--kt-state-hover), transparent); }
+.kt-seg > .kt-seg__opt.is-active, .kt-seg > .kt-seg__opt[aria-pressed="true"] { background: var(--kt-action-fill); color: var(--kt-text-on-accent); }
+/* Nhóm phân đoạn đứng trong một ô biểu mẫu thì nó LÀ ô ấy, nên nó lấp đầy
+   bề ngang và chia đều cho từng lựa chọn. Để nguyên `inline-flex` thì cột
+   ô kéo nó rộng hết hàng mà mấy cái nút vẫn co về bên trái, và phần thừa
+   bên phải trông y hệt một ô nhập rỗng nằm dính vào nút. */
+.kt-field > .kt-seg { display: flex; }
+.kt-field > .kt-seg > .kt-seg__opt { flex: 1 1 0; min-width: 0; }
+/* Dải chọn TRẢI HẾT BỀ NGANG. `.kt-seg` là `inline-flex` nên nó co theo
+   chữ, đúng khi nó đứng cạnh thứ khác. Nhưng đặt nó làm con của một cột
+   dọc thì `align-items: stretch` kéo nó rộng bằng cột, trong khi ba mục
+   bên trong vẫn co theo chữ: phần thừa dồn hết vào mục CUỐI, và một dải
+   ba lựa chọn hiện ra với ô cuối rộng gấp đôi hai ô kia. Không lỗi nào
+   nổ, nó chỉ thôi đọc ra như ba lựa chọn ngang hàng.
+   Khai bằng BIẾN THỂ chứ không đoán theo chỗ đứng: người viết màn phải
+   trả lời được "dải này chia đều hay co theo chữ". */
+.kt-seg--block { display: flex; width: 100%; }
+.kt-seg--block > .kt-seg__opt { flex: 1 1 0; min-width: 0; }
+
+.kt-chip { border-radius: var(--kt-radius-md); display: inline-flex; align-items: center; gap: var(--kt-space-2); min-height: var(--kt-control-h-sm); padding: 0 var(--kt-space-3); font: inherit; font-size: var(--kt-type-label-size); font-weight: var(--kt-weight-semibold); color: var(--kt-text-secondary); background: var(--kt-surface); border: var(--kt-border-w-hair) solid var(--kt-border-default); cursor: pointer; transition: var(--kt-transition-color); }
+.kt-chip:hover { border-color: var(--kt-border-strong); color: var(--kt-text-primary); }
+.kt-chip.is-selected, .kt-chip[aria-pressed="true"] { background: var(--kt-surface-accent); border: var(--kt-border-w) solid var(--kt-border-strong); color: var(--kt-text-primary); }
+.kt-chip[disabled] { opacity: var(--kt-state-disabled-opacity); cursor: not-allowed; }
+.kt-chip-set { display: flex; flex-wrap: wrap; gap: var(--kt-space-2); }
+
+.kt-stepper { border-radius: var(--kt-radius-md); display: inline-flex; align-items: stretch; border: var(--kt-border-w) solid var(--kt-border-strong); background: var(--kt-surface); }
+.kt-stepper > button { font: inherit; font-size: var(--kt-font-ui-strong); font-weight: var(--kt-weight-bold); width: var(--kt-control-h); min-height: var(--kt-control-h); background: transparent; color: var(--kt-action-quiet-fg); border: 0; cursor: pointer; }
+.kt-stepper > button:hover { background: color-mix(in srgb, var(--kt-state-ink) var(--kt-state-hover), transparent); }
+.kt-stepper > output { display: inline-flex; align-items: center; justify-content: center; min-width: 56px; font-variant-numeric: tabular-nums; font-weight: var(--kt-weight-bold); border-left: var(--kt-border-w) solid var(--kt-border-strong); border-right: var(--kt-border-w) solid var(--kt-border-strong); }
+
+.kt-upload { border-radius: var(--kt-radius-lg); display: flex; flex-direction: column; align-items: flex-start; gap: var(--kt-space-2); padding: var(--kt-space-6) var(--kt-pad); background: var(--kt-surface-sunken); border: var(--kt-border-w) dashed var(--kt-border-default); color: var(--kt-text-secondary); font-size: var(--kt-type-label-size); cursor: pointer; }
+.kt-upload:hover, .kt-upload.is-dragover { border-color: var(--kt-border-accent); color: var(--kt-text-primary); }
+.kt-upload.is-error { border-style: solid; border-color: var(--kt-border-error); background: var(--kt-danger-bg); color: var(--kt-danger-fg); }
+
+/* ==========================================================================
+   ĐIỀU HƯỚNG — thanh trên, thanh đáy, tab, vụn đường dẫn, phân trang, ray, khay
+   ==========================================================================*/
+.kt-appbar { display: flex; align-items: center; justify-content: space-between; gap: var(--kt-space-3); padding: var(--kt-pad-tight) var(--kt-pad); background: var(--kt-surface-inverse); color: var(--kt-text-on-inverse); position: sticky; top: 0; z-index: var(--kt-z-sticky); }
+.kt-appbar__title { font-size: var(--kt-font-ui-strong); font-weight: var(--kt-weight-bold); }
+.kt-appbar .kt-btn--ghost { color: var(--kt-text-on-inverse); --kt-state-ink: var(--kt-white); }
+
+.kt-tabbar { position: sticky; bottom: 0; z-index: var(--kt-z-nav); display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; background: var(--kt-surface); border-top: var(--kt-border-w) solid var(--kt-border-strong); padding-bottom: env(safe-area-inset-bottom); }
+.kt-tabbar__item { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: var(--kt-tap-min); padding: var(--kt-space-2) var(--kt-space-1); font: inherit; font-size: var(--kt-type-overline-size); font-weight: var(--kt-weight-semibold); color: var(--kt-text-tertiary); background: transparent; border: 0; border-top: var(--kt-border-w-thick) solid transparent; cursor: pointer; }
+.kt-tabbar__item:hover { background: var(--kt-surface-sunken); }
+.kt-tabbar__item.is-active, .kt-tabbar__item[aria-current="page"] { color: var(--kt-text-brand); border-top-color: var(--kt-action-indicator); }
+.kt-tabbar__item[aria-disabled="true"] { opacity: var(--kt-state-disabled-opacity); pointer-events: none; }
+
+.kt-tabs { display: flex; gap: var(--kt-space-4); border-bottom: var(--kt-border-w) solid var(--kt-border-strong); overflow-x: auto; }
+.kt-tab { position: relative; font: inherit; font-size: var(--kt-font-ui); font-weight: var(--kt-weight-semibold); color: var(--kt-text-tertiary); background: transparent; border: 0; padding: var(--kt-space-3) 0; min-height: var(--kt-tap-min); cursor: pointer; white-space: nowrap; }
+.kt-tab:hover { color: var(--kt-text-primary); }
+.kt-tab[aria-selected="true"] { color: var(--kt-text-primary); font-weight: var(--kt-weight-bold); box-shadow: inset 0 calc(var(--kt-border-w-thick) * -1) 0 var(--kt-action-indicator); }
+.kt-tab__count { display: inline-block; margin-left: var(--kt-space-2); font-variant-numeric: tabular-nums; color: var(--kt-text-tertiary); }
+
+.kt-breadcrumb { display: flex; align-items: center; gap: var(--kt-space-2); font-size: var(--kt-type-label-size); color: var(--kt-text-tertiary); }
+.kt-breadcrumb__sep { color: var(--kt-border-default); }
+.kt-breadcrumb [aria-current="page"] { color: var(--kt-text-primary); font-weight: var(--kt-weight-semibold); }
+
+.kt-pager { display: flex; align-items: center; gap: var(--kt-space-2); }
+.kt-pager__info { font-size: var(--kt-type-label-size); color: var(--kt-text-secondary); font-variant-numeric: tabular-nums; }
+.kt-pager__btn { border-radius: var(--kt-radius-md); font: inherit; font-size: var(--kt-type-label-size); font-weight: var(--kt-weight-semibold); min-width: var(--kt-control-h-sm); min-height: var(--kt-control-h-sm); background: var(--kt-surface); color: var(--kt-action-quiet-fg); border: var(--kt-border-w-hair) solid var(--kt-border-default); cursor: pointer; }
+.kt-pager__btn:hover { border-color: var(--kt-border-strong); }
+.kt-pager__btn[aria-current="page"] { background: var(--kt-action-fill); color: var(--kt-text-on-accent); border-color: var(--kt-text-brand); }
+.kt-pager__btn[disabled] { opacity: var(--kt-state-disabled-opacity); cursor: not-allowed; }
+
+.kt-rail { display: flex; flex-direction: column; gap: 2px; padding: var(--kt-space-3) var(--kt-space-2); background: var(--kt-surface-inverse); color: var(--kt-text-on-inverse); min-width: 216px; }
+.kt-rail__item { display: flex; align-items: center; gap: var(--kt-space-3); min-height: var(--kt-control-h); padding: 0 var(--kt-space-3); font: inherit; font-size: var(--kt-font-ui); font-weight: var(--kt-weight-medium); color: var(--kt-text-on-inverse-muted); background: transparent; border: 0; border-left: var(--kt-border-w-thick) solid transparent; cursor: pointer; text-align: left; transition: var(--kt-transition-color); }
+.kt-rail__item > svg { opacity: 0.75; }
+.kt-rail__item:hover { color: var(--kt-text-on-inverse); background: color-mix(in srgb, var(--kt-white) 8%, transparent); }
+.kt-rail__item:hover > svg { opacity: 1; }
+.kt-rail__item.is-active, .kt-rail__item[aria-current="page"] { color: var(--kt-text-on-inverse); font-weight: var(--kt-weight-bold); border-left-color: var(--kt-action-indicator); background: color-mix(in srgb, var(--kt-white) 12%, transparent); }
+.kt-rail__item.is-active > svg { opacity: 1; }
+.kt-rail__count { margin-left: auto; font-size: var(--kt-type-caption-size); font-weight: var(--kt-weight-semibold); font-variant-numeric: tabular-nums; color: var(--kt-text-on-inverse-muted); }
+.kt-rail__item.is-active .kt-rail__count { color: var(--kt-text-on-inverse); }
+.kt-rail__group { margin: var(--kt-space-5) 0 var(--kt-space-1); padding: 0 var(--kt-space-3); font-size: var(--kt-type-overline-size); font-weight: var(--kt-weight-semibold); letter-spacing: var(--kt-tracking-caps); text-transform: uppercase; color: color-mix(in srgb, var(--kt-text-on-inverse-muted) 80%, transparent); }
+.kt-rail__group:first-of-type { margin-top: var(--kt-space-3); }
+.kt-rail__brand { display: flex; align-items: center; gap: var(--kt-space-3); padding: var(--kt-space-2) var(--kt-space-3) var(--kt-space-4); border-bottom: var(--kt-border-w-hair) solid color-mix(in srgb, var(--kt-white) 18%, transparent); }
+
+.kt-drawer { border-radius: var(--kt-radius-md); position: fixed; top: 0; bottom: 0; left: 0; z-index: var(--kt-z-drawer); width: min(88vw, 360px); background: var(--kt-surface); border-right: var(--kt-border-w) solid var(--kt-border-strong); box-shadow: var(--kt-shadow-lg); display: flex; flex-direction: column; }
+
+/* ==========================================================================
+   BỀ MẶT NỔI — lớp che, tấm trượt, hộp thoại, cửa sổ nhỏ, trình đơn, mách nhỏ
+   ==========================================================================*/
+.kt-scrim { position: fixed; inset: 0; z-index: var(--kt-z-scrim); background: var(--kt-scrim); }
+.kt-sheet { border-radius: var(--kt-radius-sheet) var(--kt-radius-sheet) 0 0; position: fixed; left: 0; right: 0; bottom: 0; max-height: 88dvh; overflow-y: auto; overscroll-behavior: contain; z-index: var(--kt-z-sheet); background: var(--kt-surface-overlay); border-top: var(--kt-border-w-thick) solid var(--kt-border-strong); box-shadow: var(--kt-shadow-sheet); padding: var(--kt-pad); padding-bottom: max(var(--kt-pad), env(safe-area-inset-bottom)); display: flex; flex-direction: column; gap: var(--kt-pad-tight); animation: kt-rise var(--kt-dur-slow) var(--kt-ease-decelerate); }
+.kt-sheet__grip { border-radius: var(--kt-radius-pill); width: 56px; height: var(--kt-border-w-thick); background: var(--kt-border-default); align-self: center; }
+.kt-sheet__title { font-size: var(--kt-type-title-size); font-weight: var(--kt-weight-bold); }
+@keyframes kt-rise { from { transform: translateY(16px); opacity: 0; } }
+
+/* GỐC BỆNH PHÔNG CHÂN, cả ba cửa cùng dính. `.kt-app` là chỗ DUY NHẤT khai
+   `font-family`, mà `KT.ui.confirm` và `KT.ui.toast` lại dựng phần tử rồi
+   `document.body.appendChild()` — tức là chúng nằm NGOÀI `.kt-app`. Hậu quả:
+   mọi hộp xác nhận và mọi tin báo nổi của khách, thợ lẫn buồng lái đều chạy
+   bằng phông chân mặc định của trình duyệt, giữa một hệ Be Vietnam Pro. Màu
+   với khoảng cách vẫn đúng vì token nằm ở `:root`, nên lỗi này không phá bố
+   cục — nó chỉ đổi mặt chữ, và vì thế sống rất lâu mà không ai gọi tên.
+   Ba gốc treo ngoài thân trang phải tự đứng được, đừng trông vào cha. */
+.kt-dialog, .kt-toast-host, .kt-scrim {
+  font-family: var(--kt-font-sans);
+  font-size: var(--kt-type-body-size);
+  line-height: var(--kt-type-body-leading);
+  color: var(--kt-text-primary);
+}
+/* Hộp thoại có LỀ RIÊNG, không mượn `--kt-pad` của thẻ. Thẻ nằm trên nền
+   trang và có cả trang quanh nó để thở; hộp thoại là bề mặt trên cùng, che
+   mất mọi thứ, nên lề của nó phải rộng hơn hẳn — 12px ở mật độ compact là
+   lề của một ô bảng, không phải lề của một quyết định.
+
+   Và khoảng cách GIỮA hai khối phải khác hẳn khoảng cách TRONG một khối.
+   Bản cũ để `gap: --kt-pad-tight` cho cả hộp, nên tiêu đề, dòng phụ, dải
+   cảnh báo, bảng tiền, ô nhập và hàng nút đều cách nhau đúng 8px: sáu thứ
+   khác loại xếp đều tăm tắp thì không thứ nào thuộc về thứ nào, và mắt
+   không có chỗ nào để bám mà chia nhóm. */
+.kt-dialog { border-radius: var(--kt-radius-lg); --kt-dialog-pad: var(--kt-space-6);
+  background: var(--kt-surface-overlay); border: var(--kt-border-w) solid var(--kt-border-strong);
+  box-shadow: var(--kt-shadow-md); padding: var(--kt-dialog-pad); max-width: 440px;
+  display: flex; flex-direction: column; gap: var(--kt-space-4); }
+.kt-dialog__title { font-size: var(--kt-type-title-size); font-weight: var(--kt-weight-bold); line-height: var(--kt-leading-tight); }
+.kt-dialog__body { font-size: var(--kt-font-ui); color: var(--kt-text-secondary); }
+/* Dòng phụ ngay dưới tiêu đề là MỘT khối với tiêu đề, không phải khối thứ
+   hai. Kéo nó lại gần để cái tên và cái kỳ đọc thành một câu. */
+.kt-dialog__title + .kt-dialog__body { margin-top: calc(var(--kt-space-3) * -1); }
+/* Hàng nút chốt: dính đáy trong chính khung cuộn của hộp, tràn ra hai mép,
+   có đường kẻ trên. Hộp thoại nào cũng có lúc dài hơn màn, và thứ đầu tiên
+   trôi khỏi tầm mắt luôn là thứ người ta mở hộp lên để bấm. */
+.kt-dialog__actions { display: flex; gap: var(--kt-space-2); flex-wrap: wrap; justify-content: flex-end;
+  position: sticky; bottom: calc(var(--kt-dialog-pad) * -1);
+  margin: var(--kt-space-2) calc(var(--kt-dialog-pad) * -1) calc(var(--kt-dialog-pad) * -1);
+  padding: var(--kt-space-4) var(--kt-dialog-pad);
+  background: var(--kt-surface-overlay);
+  border-top: var(--kt-border-w) solid var(--kt-border-strong); }
+/* Lý do nút chốt đang tắt. Nút tắt mà không nói vì sao thì người ta bấm ba
+   lần rồi đóng hộp đi, tưởng hệ hỏng. Đẩy sang trái để nó không chen vào
+   giữa hai cái nút. */
+.kt-dialog__why { order: -1; flex: 0 0 100%; margin: 0;
+  font-size: var(--kt-type-label-size); line-height: var(--kt-leading-snug); color: var(--kt-text-tertiary); }
+.kt-dialog__actions > .kt-btn { flex: 0 0 auto; }
+.kt-dialog__why:empty { display: none; }
+.kt-dialog--destructive { border-color: var(--kt-danger-border); border-width: var(--kt-border-w-thick); }
+.kt-dialog--destructive .kt-dialog__title { color: var(--kt-danger-fg); }
+/* Hộp thoại nổi giữa màn hình.
+
+   Trước đây mỗi màn tự gõ lại chuỗi `position:fixed;left:50%;top:50%;...`,
+   bảy chỗ bảy bản, và chỉ MỘT bản nhớ chặn chiều cao. Hộp thoại nào dài
+   hơn màn thì phần đáy tràn ra ngoài, mà đáy chính là chỗ đặt nút chốt:
+   hộp vẫn mở, vẫn đúng nội dung, chỉ là không ai bấm được nút nào. Trần
+   chiều cao ở đây là phần bắt buộc, không phải phần trang trí.
+
+   Bề ngang khai bằng `--kt-dialog-w` chứ không bằng lớp con, vì bảy hộp
+   đang dùng bảy con số khác nhau và số ấy là chuyện của từng hộp. */
+.kt-dialog--noi {
+  position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  width: min(var(--kt-dialog-w, 460px), calc(100vw - var(--kt-space-8)));
+  max-width: none;
+  max-height: calc(100vh - var(--kt-space-8));
+  overflow-y: auto;
+  z-index: var(--kt-z-dialog);
+}
+.kt-dialog--destructive::before { content: ""; height: var(--kt-space-2); background: var(--kt-danger-fill); margin: calc(var(--kt-dialog-pad) * -1) calc(var(--kt-dialog-pad) * -1) 0; }
+
+/* HỘP CHẶN: việc vừa yêu cầu không làm được.
+
+   Cam chứ không đỏ, và đó là một phân biệt về NGHĨA chứ không phải về
+   độ mạnh. Đỏ trong hệ này dành cho việc PHÁ: xoá một dòng, huỷ một
+   đơn, chấm dứt một hợp đồng. Hộp chặn không phá gì cả, nó nói rằng
+   một việc lành không đi tiếp được, và người đọc cần bình tĩnh đọc hết
+   câu rồi chọn đường khác. Dùng chung màu với việc phá là dạy người ta
+   rằng hai thứ ấy cùng loại.
+
+   Ba tín hiệu, đủ để đọc cả khi lọc xám: dải đầu hộp, viền dày, và
+   tiêu đề đổi màu. Không tín hiệu nào một mình gánh việc.
+
+   Hồ sơ `touch` cho nút giãn hết bề ngang. Người bấm nó đang đứng ở
+   hiện trường, và nút này là thứ duy nhất trên hộp: một nút đơn độc
+   nép bên phải là bắt ngón tay đi tìm. */
+.kt-dialog--chan { border-color: var(--kt-warning-border); border-width: var(--kt-border-w-thick); }
+.kt-dialog--chan .kt-dialog__title { color: var(--kt-warning-fg); }
+.kt-dialog--chan::before { content: ""; height: var(--kt-space-2); background: var(--kt-warning-fill); margin: calc(var(--kt-dialog-pad) * -1) calc(var(--kt-dialog-pad) * -1) 0; }
+.kt-dialog__duong { margin: 0; padding-left: var(--kt-space-5); display: flex; flex-direction: column; gap: var(--kt-space-2); font-size: var(--kt-font-ui); color: var(--kt-text-secondary); }
+.kt-dialog[data-kt-density="touch"] .kt-dialog__actions > .kt-btn { flex: 1 1 100%; min-height: var(--kt-tap-min); }
+
+.kt-popover { border-radius: var(--kt-radius-md); background: var(--kt-surface-overlay); border: var(--kt-border-w) solid var(--kt-border-strong); box-shadow: var(--kt-shadow-md); padding: var(--kt-pad-tight); z-index: var(--kt-z-popover); }
+.kt-menu { border-radius: var(--kt-radius-md); min-width: 200px; background: var(--kt-surface-overlay); border: var(--kt-border-w) solid var(--kt-border-strong); box-shadow: var(--kt-shadow-md); padding: var(--kt-space-1) 0; z-index: var(--kt-z-popover); }
+.kt-menu__item { display: flex; align-items: center; gap: var(--kt-space-3); width: 100%; min-height: var(--kt-control-h); padding: 0 var(--kt-pad-tight); font: inherit; font-size: var(--kt-font-ui); color: var(--kt-text-primary); background: transparent; border: 0; text-align: left; cursor: pointer; }
+.kt-menu__item:hover { background: var(--kt-surface-sunken); }
+.kt-menu__item--danger { color: var(--kt-danger-fg); }
+.kt-menu__item[aria-disabled="true"] { opacity: var(--kt-state-disabled-opacity); pointer-events: none; }
+.kt-menu__sep { height: 0; border-top: var(--kt-border-w-hair) solid var(--kt-border-subtle); margin: var(--kt-space-1) 0; }
+
+.kt-tooltip { position: relative; display: inline-flex; }
+.kt-tooltip__bubble { border-radius: var(--kt-radius-sm); position: absolute; bottom: calc(100% + var(--kt-space-2)); left: 0; z-index: var(--kt-z-tooltip); background: var(--kt-surface-inverse); color: var(--kt-text-on-inverse); font-size: var(--kt-type-caption-size); padding: var(--kt-space-1) var(--kt-space-2); white-space: nowrap; }
+
+/* ==========================================================================
+   THÔNG BÁO — dải băng, cảnh báo trong dòng, tin báo nổi kèm hoàn tác
+   ==========================================================================*/
+.kt-banner { border-radius: var(--kt-radius-md); display: flex; align-items: flex-start; gap: var(--kt-space-3); padding: var(--kt-pad-tight) var(--kt-pad); font-size: var(--kt-font-ui); background: var(--kt-info-bg); color: var(--kt-info-fg); border-left: var(--kt-space-2) solid var(--kt-info-border); flex-wrap: wrap; }
+.kt-banner--warning { background: var(--kt-warning-bg); color: var(--kt-warning-fg); border-left-color: var(--kt-warning-border); }
+.kt-banner--danger { background: var(--kt-danger-bg); color: var(--kt-danger-fg); border-left-color: var(--kt-danger-border); }
+.kt-banner--success { background: var(--kt-success-bg); color: var(--kt-success-fg); border-left-color: var(--kt-success-border); }
+.kt-banner--offline { background: var(--kt-neutral-bg); color: var(--kt-neutral-fg); border-left-color: var(--kt-neutral-border); }
+.kt-banner__body { display: flex; flex-direction: column; gap: var(--kt-space-1); flex: 1; min-width: 14ch; }
+.kt-banner__title { font-weight: var(--kt-weight-bold); }
+.kt-banner__action { margin-left: auto; flex: none; }
+
+.kt-alert { border-radius: var(--kt-radius-md); display: flex; align-items: flex-start; gap: var(--kt-space-2); padding: var(--kt-space-2) var(--kt-pad-tight); font-size: var(--kt-type-label-size); font-weight: var(--kt-weight-semibold); background: var(--kt-danger-bg); color: var(--kt-danger-fg); border: var(--kt-border-w-hair) solid var(--kt-danger-border); }
+
+.kt-toast { border-radius: var(--kt-radius-md); display: flex; align-items: center; gap: var(--kt-space-3); background: var(--kt-surface-inverse); color: var(--kt-text-on-inverse); padding: var(--kt-pad-tight) var(--kt-pad); font-size: var(--kt-font-ui); border-left: var(--kt-space-2) solid var(--kt-action-indicator); box-shadow: var(--kt-shadow-md); max-width: 520px; }
+.kt-toast--success { border-left-color: var(--kt-success-fill); }
+.kt-toast--danger { border-left-color: var(--kt-danger-fill); }
+.kt-toast--info { border-left-color: var(--kt-info-fill); }
+.kt-toast__action { margin-left: auto; font: inherit; font-weight: var(--kt-weight-bold); color: var(--kt-text-on-inverse); background: transparent; border: 0; border-bottom: var(--kt-border-w) solid currentColor; padding: 0 0 1px; cursor: pointer; white-space: nowrap; }
+
+/* ==========================================================================
+   HIỂN THỊ DỮ LIỆU — thẻ, thẻ đơn, danh sách, bảng, chỉ số, dòng thời gian
+   ==========================================================================*/
+.kt-card { border-radius: var(--kt-radius-lg); background: var(--kt-surface); border: var(--kt-surface-edge-w) solid var(--kt-surface-edge); box-shadow: var(--kt-surface-lift); --kt-card-pad: var(--kt-pad); }
+.kt-card__head { padding: var(--kt-pad-tight) var(--kt-pad); border-bottom: var(--kt-surface-edge-w) solid var(--kt-surface-edge); background: var(--kt-surface-accent); }
+.kt-card__body { padding: var(--kt-pad); display: flex; flex-direction: column; gap: var(--kt-pad-tight); }
+.kt-card__foot { padding: var(--kt-pad); border-top: var(--kt-border-w-hair) solid var(--kt-border-subtle); }
+.kt-card__title { font-size: var(--kt-type-title-size); font-weight: var(--kt-weight-bold); line-height: var(--kt-leading-tight); }
+
+/* ── THẺ TRẦN: thẻ vẫn phải là thẻ khi không ai viết ô con ────────────────
+   Lề của thẻ nằm ở ba ô con `__head` `__body` `__foot`, nên thẻ viết trần
+   không có lề nào: chữ tì lên đường viền, ô nhập chạy hết bề ngang, và
+   mấy thẻ trần xếp chồng trong ngăn kéo đọc ra thành MỘT tảng liền chứ
+   không ra mấy khối tách bạch. Đo trên bản đang chạy: buồng lái 291/359
+   thẻ viết trần, cửa thợ 40/62. Sửa 331 chỗ gọi bằng tay là sửa triệu
+   chứng; thứ hỏng là chính thành phần, vì nó chỉ đúng khi người viết
+   NHỚ bọc thêm một lớp. Nay thẻ trần tự giữ lề, thẻ có ô con giữ nguyên
+   hình cũ từng pixel (`:has` chỉ chạm nhánh không có ô con nào).
+   Bảng vẫn tràn ra mép: đầu bảng và sọc ngựa vằn phải chạm viền thì mới
+   đọc ra là một bảng, thụt vào thì nó thành một khối chữ có kẻ dòng. */
+.kt-card:not(:has(> :is(.kt-card__head, .kt-card__body, .kt-card__foot))) {
+  display: flex; flex-direction: column; gap: var(--kt-pad-tight);
+  padding: var(--kt-card-pad);
+}
+.kt-card:not(:has(> :is(.kt-card__head, .kt-card__body, .kt-card__foot))) > .kt-table-wrap {
+  margin-inline: calc(var(--kt-card-pad) * -1);
+}
+.kt-card:not(:has(> :is(.kt-card__head, .kt-card__body, .kt-card__foot))) > .kt-table-wrap:first-child {
+  margin-top: calc(var(--kt-card-pad) * -1);
+}
+.kt-card:not(:has(> :is(.kt-card__head, .kt-card__body, .kt-card__foot))) > .kt-table-wrap:last-child {
+  margin-bottom: calc(var(--kt-card-pad) * -1);
+}
+/* Thẻ NỬA: có đầu thẻ mà không có thân thẻ. Nội dung lạc ở giữa cũng
+   không có lề, cùng một bệnh, khác chỗ đứng.
+
+   LỀ ĐI BẰNG `padding` CỦA THẺ, KHÔNG BẰNG `margin` CỦA CON — và đó là
+   cả bài học. Bản đầu (18/08) cho con `margin-inline`, đọc riêng thì
+   đúng: con thụt vào đúng một lề mỗi bên. Nhưng lề không gộp vào bề
+   ngang — `box-sizing: border-box` gộp padding và viền, KHÔNG gộp lề —
+   nên bất kỳ con nào khai `width: 100%` cũng tính 100% của bề ngang thẻ
+   RỒI CỘNG THÊM lề, tức tràn ra ngoài đúng một lề. Hai dòng CSS mỗi
+   dòng đọc riêng đều đúng; thứ sai chỉ hiện ở lượt VẼ.
+
+   Trả giá 21/08: khối Giấy tờ của ngăn kéo hồ sơ thợ đẩy cái nút Gỡ ra
+   ngoài viền thẻ 19px, ở mọi khổ, từ ngày dựng. Không cổng nào bắt vì
+   `.kt-list__row` khai `width: 100%` là ĐÚNG (nó có thể là `<button>`,
+   mà nút thì co theo nội dung chứ không tự giãn), và luật lề kia cũng
+   ĐÚNG. Chỉ chỗ hai luật gặp nhau là sai, và ở đó không có luật nào để
+   mà vi phạm.
+
+   Thẻ thành cột flex thì con là ô flex, `align-items: stretch` cho nó
+   vừa khít vùng nội dung — `width: 100%` lúc ấy đo đúng vùng ấy. Ba thứ
+   PHẢI chạm mép (đầu thẻ, chân thẻ, bảng) kéo ngược ra bằng lề âm: đầu
+   bảng và sọc ngựa vằn thụt vào thì bảng đọc ra thành khối chữ có kẻ
+   dòng. CỐ Ý không khai `gap`: thẻ nửa trước nay xếp theo dòng khối,
+   thêm khe là đổi hình 94 cái thẻ để chữa một cái. */
+.kt-card:has(> .kt-card__head):not(:has(> .kt-card__body)) {
+  display: flex; flex-direction: column;
+  padding-inline: var(--kt-card-pad); padding-bottom: var(--kt-card-pad);
+}
+.kt-card:has(> .kt-card__head):not(:has(> .kt-card__body)) > :is(.kt-card__head, .kt-card__foot, .kt-table-wrap) {
+  /* `width: auto` là nửa thứ hai của phép kéo ra mép, và thiếu nó thì lề
+     âm chỉ dời chỗ chứ không nới bề ngang: `.kt-table-wrap` khai
+     `width: 100%`, mà 100% ở đây đã là vùng nội dung ĐÃ TRỪ lề, nên bảng
+     dịch sang trái đúng một lề rồi hụt đúng một lề bên phải — hẹp lại 40px
+     và cao thêm vì chữ xuống dòng sớm hơn. Ô flex `width: auto` thì giãn
+     theo `stretch`, và lề âm nới đúng phần cần nới.
+
+     `max-width: none` là nửa thứ BA, và nó lộ ra đúng sau khi vá nửa thứ
+     hai: `.kt-table-wrap` còn khai `max-width: 100%`, tức trần vẫn đo
+     theo vùng đã trừ lề, nên bảng bị chặn lại ở đúng con số cũ. Ba dòng
+     của cùng một thành phần, phải gỡ cả ba mới ra một phép đo. */
+  margin-inline: calc(var(--kt-card-pad) * -1); width: auto; max-width: none;
+}
+.kt-card:has(> .kt-card__head):not(:has(> .kt-card__body)) > .kt-card__foot:last-child {
+  margin-bottom: calc(var(--kt-card-pad) * -1);
+}
+
+.kt-order { border-radius: var(--kt-radius-lg); background: var(--kt-surface); border: var(--kt-surface-edge-w) solid var(--kt-surface-edge); box-shadow: var(--kt-surface-lift); display: flex; flex-direction: column; }
+.kt-order__top { display: flex; align-items: center; justify-content: space-between; gap: var(--kt-space-2); padding: var(--kt-pad-tight) var(--kt-pad); background: var(--kt-surface-inverse); color: var(--kt-text-on-inverse); }
+.kt-order__code { font-variant-numeric: tabular-nums; font-size: var(--kt-type-label-size); font-weight: var(--kt-weight-semibold); }
+.kt-order__body { padding: var(--kt-pad); display: flex; flex-direction: column; gap: var(--kt-pad-tight); }
+.kt-order__service { font-size: var(--kt-font-ui-strong); font-weight: var(--kt-weight-bold); line-height: var(--kt-leading-tight); }
+.kt-order__place { font-size: var(--kt-font-ui); color: var(--kt-text-secondary); }
+.kt-order__note { display: flex; gap: var(--kt-space-2); background: var(--kt-surface-accent); color: var(--kt-warning-fg); padding: var(--kt-pad-tight); font-size: var(--kt-type-label-size); }
+.kt-order__foot { display: flex; align-items: center; justify-content: space-between; padding: var(--kt-pad-tight) var(--kt-pad); border-top: var(--kt-border-w-hair) solid var(--kt-border-subtle); }
+.kt-order:hover { box-shadow: var(--kt-shadow-xs); }
+.kt-order.is-selected { outline: var(--kt-border-w-thick) solid var(--kt-action-indicator); outline-offset: -1px; }
+
+.kt-list { border-radius: var(--kt-radius-lg); display: flex; flex-direction: column; background: var(--kt-surface); border: var(--kt-border-w) solid var(--kt-border-strong); }
+.kt-list__row { display: flex; align-items: center; gap: var(--kt-pad-tight); padding: var(--kt-pad-tight) var(--kt-pad); min-height: var(--kt-row-h); border-bottom: var(--kt-border-w-hair) solid var(--kt-border-subtle); text-align: left; background: transparent; border-left: 0; border-right: 0; border-top: 0; font: inherit; color: inherit; cursor: pointer; width: 100%; }
+/* Hàng CHỈ ĐỂ ĐỌC. Con trỏ tay và nền khi rê chuột là lời mời bấm, mà
+   một hàng không bấm được thì lời mời ấy dẫn tới hư không — cái nút chết
+   không cần ai viết ra. Khai bằng biến thể chứ không bám thẻ `button`:
+   hệ này không đặt luật lên phần tử trần (cổng 6 gác), và khai rõ thì
+   người viết màn phải TRẢ LỜI câu "hàng này bấm được không". */
+.kt-list__row--doc { cursor: default; }
+.kt-list__row:last-child { border-bottom: 0; }
+.kt-list__row:hover { background: var(--kt-surface-sunken); }
+.kt-list__row--doc:hover { background: transparent; }
+.kt-list__row.is-selected { background: var(--kt-accent-100); box-shadow: inset var(--kt-border-w-thick) 0 0 var(--kt-action-indicator); }
+.kt-list__main { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
+.kt-list__title { font-weight: var(--kt-weight-semibold); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.kt-list__meta { font-size: var(--kt-type-label-size); color: var(--kt-text-tertiary); }
+
+/* Ruột của một ô bảng, gói làm một. Ở đây nó KHÔNG tồn tại với bố cục:
+   `display: contents` cho con của nó lên thẳng chỗ của nó, nên bảng ở khổ
+   rộng không lệch một điểm ảnh nào. Nó chỉ hiện hình trong khối bảng-thành-
+   thẻ, chỗ ô là lưới hai cột và mọi mẩu phải nằm chung một bên. */
+.kt-the-o { display: contents; }
+
+.kt-table-wrap { border-radius: var(--kt-radius-lg); overflow-x: auto; max-width: 100%; background: var(--kt-surface); }
+.kt-table-wrap > .kt-table { min-width: max-content; }
+.kt-table { width: 100%; border-collapse: collapse; font-size: var(--kt-font-ui); background: var(--kt-surface); }
+.kt-table caption { text-align: left; padding: var(--kt-pad-tight) 0; font-size: var(--kt-type-label-size); color: var(--kt-text-tertiary); }
+.kt-table th { text-align: left; font-size: var(--kt-type-overline-size); font-weight: var(--kt-weight-bold); letter-spacing: var(--kt-tracking-caps); text-transform: uppercase; background: var(--kt-surface-inverse); color: var(--kt-text-on-inverse); padding: var(--kt-space-2) var(--kt-pad-tight); white-space: nowrap; position: sticky; top: 0; z-index: var(--kt-z-sticky); }
+.kt-table th[aria-sort] { cursor: pointer; }
+.kt-table th[aria-sort]:hover { background: var(--kt-brand-800); }
+.kt-table th[aria-sort="ascending"]::after { content: " ▲"; }
+.kt-table th[aria-sort="descending"]::after { content: " ▼"; }
+.kt-table td { padding: 0 var(--kt-pad-tight); height: var(--kt-row-h); border-bottom: var(--kt-border-w-hair) solid var(--kt-border-subtle); vertical-align: middle;
+  max-width: var(--kt-cell-max); overflow-wrap: break-word; }
+/* `height` ở trên là chiều cao TỐI THIỂU của hàng, không phải trần: ô chạm
+   trần bề ngang thì chữ xuống dòng và hàng cao thêm. Đó là đánh đổi đã
+   chọn — hàng cao hơn thì vẫn đọc được, cột bị xén thì không. */
+.kt-table tbody tr:nth-child(even) { background: var(--kt-bg-subtle); }
+
+/* ── Bảng nhiều cột ở khổ hẹp: đổi HÌNH, không đổi nội dung ────────────
+   Đo trên bản đang chạy ở 390px: 52/54 khung bảng đòi cuộn ngang, thừa
+   từ 78 tới 806 điểm ảnh. Nhưng con số ấy chưa phải chỗ đau nhất — cột
+   bị đẩy ra ngoài khung NHIỀU NHẤT là cột nút. Bảng "Đơn đang cần người"
+   giấu sáu trên tám cột, gồm cả cột nút; "Khách vừa gửi yêu cầu" giấu
+   năm. Tức là ở khổ hẹp, luật đường xử lý (§11) bị vô hiệu trong im
+   lặng: màn vẫn nói ra vấn đề, mà đường xử nằm ngoài màn hình.
+
+   `nhacCuon()` BÁO chứ không CHỮA, và một dải chữ đếm tên cột đang khuất
+   không giúp người đang đứng ngoài sảnh bấm được cái nút.
+
+   Gác bằng BỀ NGANG chứ không bằng con trỏ: đây là câu hỏi về CHỖ (bảy
+   cột không nằm vừa 390 điểm ảnh), khác câu hỏi về NGÓN TAY mà khối
+   `pointer: coarse` phía trên đã trả lời. Hai câu hỏi, hai mốc lật.
+
+   Mốc lấy ĐÚNG 900, cùng con số với mốc đưa thanh ray xuống đáy. Bản đầu
+   đặt 700 theo ước lượng "bảng cần chừng năm trăm điểm ảnh mới đọc
+   được", rồi đo ở 768 thì bảy khung vẫn tràn và cột nút vẫn khuất — tức
+   ước lượng sai, và sai ở đúng khổ máy tính bảng dọc. Một mốc thứ hai
+   nằm cách mốc cũ hai trăm điểm ảnh là hai câu trả lời cho cùng câu hỏi
+   "màn này còn rộng không", và dải giữa hai mốc là chỗ lỗi sống.
+
+   CHỈ đổi bảng từ BỐN cột trở lên. Bảng hai ba cột vẫn đọc được nguyên
+   dạng bảng ở khổ hẹp, và đổi chúng thành thẻ là kéo một thứ đang gọn
+   thành một danh sách dài lê thê. `data-kt-the` do hệ tự gắn sau khi
+   đếm cột, màn không phải khai gì.
+
+   Hàng gộp nhóm và hàng có ô trải nhiều cột GIỮ NGUYÊN dạng dòng: chúng
+   là dòng ngăn cách, không phải một bản ghi.                            */
+/* ── VẾ THỨ HAI CỦA MỌI KHỐI KHỔ HẸP: MÀN THẬT ──────────────────────────
+   `max-width` đo KHUNG BỐ CỤC, không đo MÀN HÌNH. Hai con số ấy bằng nhau ở
+   gần như mọi máy, nên chúng dễ bị đọc thành một — cho tới khi Safari trên
+   iPhone được đặt "Yêu cầu trang cho máy tính": nó bỏ qua thẻ viewport và
+   dựng khung 980px trên một cái màn 430pt. Từ giây ấy không khối khổ hẹp nào
+   khớp, buồng lái chạy bố cục máy tính trên điện thoại — ray dọc chiếm chỗ,
+   ngăn kéo 680px không phủ màn, bảng giữ nguyên cột — rồi trang trượt ngang
+   và nội dung trôi ra ngoài mép. KHÔNG LỖI NÀO NỔ: mọi luật đều đúng, chúng
+   chỉ đang trả lời một câu hỏi khác câu người dùng đang hỏi. Safari nhớ lựa
+   chọn ấy THEO TÊN MIỀN, nên bật nhầm một lần là dính mãi.
+
+   Vế thứ hai hỏi thẳng về cái màn: ngón tay (`pointer: coarse`) trên một màn
+   dưới 500pt. Ngưỡng 500 nằm giữa màn iPhone rộng nhất (430pt) và máy tính
+   bảng nhỏ nhất (744pt), nên iPad GIỮ NGUYÊN bố cục máy tính — đó là quyết
+   định, không phải chỗ bỏ sót: người điều phối ngồi iPad cần ray dọc và bảng
+   đủ cột. Máy tính bàn không bao giờ khớp vế này, vì `device-width` ở đó là
+   cả cái màn và con trỏ không phải ngón tay.
+
+   `max-device-width` đã bị khai tử trong đặc tả, và đó là rủi ro có tính
+   toán: trình duyệt nào bỏ hẳn thì vế này lặng lẽ không khớp, tức rơi về
+   đúng hành vi hôm nay chứ không dựng ra hành vi thứ ba. Sai an toàn đúng
+   chiều.                                                                 */
+@media (max-width: 900px), (pointer: coarse) and (max-device-width: 500px) {
+  /* Con số của ô số: bậc `display` 34px tính cho một ô nằm trong lưới bốn
+     cột trên màn rộng. Ở khổ hẹp lưới còn hai cột, mỗi ô khoảng 170 điểm
+     ảnh, và một số tiền đủ chữ số thì gãy làm đôi — "180.000" một dòng,
+     "VNĐ" dòng dưới. Hai nửa của một đơn vị đọc ra là hai thứ, đúng lý do
+     `nowrap` được giữ cho tiền trong bảng-thành-thẻ ngay dưới đây.
+
+     Hạ MỘT BẬC trong thang chứ không đặt một con số mới, và cấm gãy dòng:
+     lần sau có vỡ thì nó tràn ra ngoài ô — thấy được — chứ không âm thầm
+     xuống dòng trông như một bố cục cố ý. */
+  [data-kt-density="compact"] .kt-stat__value {
+    font-size: var(--kt-type-headline-size); white-space: nowrap;
+  }
+
+  /* Số tiền thôi gãy giữa số và đơn vị — ở MỌI bảng, không riêng bảng đã
+     đổi thành thẻ. Luật `nowrap` cho tiền vốn nằm trong khối bảng-thành-
+     thẻ, nên bảng HAI CỘT (thứ cố ý giữ nguyên dạng bảng ở khổ hẹp) rơi
+     ra ngoài: đo 31/08 ở bảng "Tiền vào rồi đi đâu" · "2.520.000" một
+     dòng, "VNĐ" dòng dưới. Cùng một lý do, hai nửa của một đơn vị đọc ra
+     là hai thứ; cột số ở đó rộng tới `--kt-cell-max` 150 nên một số bảy
+     chữ số vẫn nằm trọn. */
+  [data-kt-density="compact"] .kt-table td.kt-num,
+  [data-kt-density="compact"] .kt-table .kt-money { white-space: nowrap; }
+
+  /* Bảng HAI cột giữ nguyên dạng bảng (nó vốn đã là nhãn kèm giá trị),
+     nhưng trần ô 220 điểm ảnh đặt cho khung 954 thì ở khung 364 nó cho
+     phép một cột chiếm quá nửa. Trần là thứ phải co theo chỗ có, không
+     phải một con số — cùng lập luận với mốc 1439 ngay trên. */
+  [data-kt-density="compact"] { --kt-cell-max: 150px; }
+  /* Bảng KHÔNG đổi thành thẻ (hai cột) thôi đòi bề ngang theo chữ dài
+     nhất của nó. `min-width: max-content` là luật của bảng có cột cần
+     thẳng hàng; bảng hai cột ở khổ hẹp thì không.
+
+     ĐÃ THỬ VÀ ĐÃ GỠ `table-layout: fixed` ở đây. Nó chữa đúng bệnh trên
+     giấy, nhưng phép nghiệm thu ngược cho thấy bẻ nó ra thì cổng VẪN
+     XANH, và đo lại trên app thật ở 390 điểm ảnh vẫn 0 trên 54 khung —
+     tức trần ô đã hạ xuống 150 làm hết việc, còn nó là điều kiện thừa.
+     Giữ một luật thừa trong hệ là để lại thứ người sau phải đoán xem nó
+     đang bảo vệ ca nào. */
+  [data-kt-density="compact"] .kt-table-wrap > .kt-table:not([data-kt-the]) {
+    min-width: 0;
+  }
+  [data-kt-density="compact"] .kt-table-wrap:has(> [data-kt-the]) { overflow-x: visible; }
+  [data-kt-density="compact"] .kt-table-wrap > .kt-table[data-kt-the] { min-width: 0; }
+
+  [data-kt-density="compact"] .kt-table[data-kt-the],
+  [data-kt-density="compact"] .kt-table[data-kt-the] > tbody { display: block; width: 100%; }
+
+  /* Đầu bảng thôi hiện, nhưng KHÔNG `display: none`: tên cột vẫn phải
+     tới được trình đọc màn hình, vì mỗi ô bên dưới đọc tên cột của nó ra
+     từ chính chỗ này. */
+  [data-kt-density="compact"] .kt-table[data-kt-the] > thead {
+    position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip-path: inset(50%); white-space: nowrap;
+  }
+
+  [data-kt-density="compact"] .kt-table[data-kt-the] > tbody > tr {
+    display: block; padding: var(--kt-pad-tight) 0;
+    border-bottom: var(--kt-border-w) solid var(--kt-border-strong);
+  }
+  /* Sọc ngựa vằn tắt: nó phân biệt DÒNG trong một khối liền, mà ở đây mỗi
+     bản ghi đã là một khối có đường kẻ riêng. Giữ cả hai là hai hệ ngăn
+     cách chồng lên nhau. */
+  [data-kt-density="compact"] .kt-table[data-kt-the] > tbody > tr:nth-child(even) { background: transparent; }
+  [data-kt-density="compact"] .kt-table[data-kt-the] > tbody > tr:last-child { border-bottom: 0; }
+
+  [data-kt-density="compact"] .kt-table[data-kt-the] > tbody > tr > td {
+    display: grid; grid-template-columns: minmax(0, 8.5rem) minmax(0, 1fr);
+    gap: var(--kt-space-3); align-items: baseline;
+    height: auto; min-height: var(--kt-tap-min);
+    padding: var(--kt-space-1) var(--kt-pad-tight);
+    border-bottom: 0; white-space: normal; max-width: none;
+  }
+  /* Khối bọc hiện ra thành MỘT ô lưới. Ngoài khối này nó mang
+     `display: contents` và không tồn tại với bố cục. */
+  [data-kt-density="compact"] .kt-table[data-kt-the] > tbody > tr > td > .kt-the-o {
+    display: block; min-width: 0;
+  }
+  [data-kt-density="compact"] .kt-table[data-kt-the] > tbody > tr > td::before {
+    content: attr(data-kt-o);
+    font-size: var(--kt-type-overline-size); font-weight: var(--kt-weight-bold);
+    letter-spacing: var(--kt-tracking-caps); text-transform: uppercase;
+    color: var(--kt-text-tertiary);
+  }
+  /* Ô không có tên cột (cột nút, cột hình) chiếm trọn bề ngang: chừa cho
+     nó một cột nhãn rỗng là chừa một khoảng trắng không nói gì, rồi đẩy
+     cái nút vào nửa hẹp bên phải. */
+  [data-kt-density="compact"] .kt-table[data-kt-the] > tbody > tr > td[data-kt-o=""] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  [data-kt-density="compact"] .kt-table[data-kt-the] > tbody > tr > td[data-kt-o=""]::before { content: none; }
+
+  /* Cấm xuống dòng là luật phục vụ BỐ CỤC BẢNG: nó giữ cho các cột thẳng
+     một mép, và nó đúng chừng nào còn cột. Ở dạng thẻ không còn cột nào
+     để thẳng hàng, nên luật ấy mất lý do tồn tại và chỉ còn tác dụng đẩy
+     chữ ra ngoài ô. Đo được ngay lượt đầu: 9 ô tràn thành 882, gần hết
+     nằm ở ba lớp `bl-nowrap`, `bl-cot-hep` và ô chứa tên người.
+
+     Trả lại `nowrap` cho ĐÚNG một thứ: con số tiền. Nó không phải một
+     câu bị bó hẹp mà là một đơn vị, gãy giữa "600.000" và "VNĐ" thì hai
+     nửa đọc ra là hai thứ.                                              */
+  [data-kt-density="compact"] .kt-table[data-kt-the] > tbody > tr > td,
+  [data-kt-density="compact"] .kt-table[data-kt-the] > tbody > tr > td * {
+    white-space: normal;
+  }
+  [data-kt-density="compact"] .kt-table[data-kt-the] > tbody > tr > td .kt-money,
+  [data-kt-density="compact"] .kt-table[data-kt-the] > tbody > tr > td.kt-num {
+    white-space: nowrap;
+  }
+  /* Nhãn của ô số phải thẳng một mép với mọi nhãn khác. `.kt-num` căn
+     phải là luật của BẢNG — nó xếp các con số thẳng hàng đơn vị, và nó
+     đúng chừng nào còn cột. Ở dạng thẻ nó thừa hưởng xuống `::before`,
+     nên riêng nhãn "TIỀN" dạt sang phải trong khi "MÃ ĐƠN", "HẸN",
+     "THỢ" đứng sát mép trái: một cột nhãn có đúng một dòng lệch đọc ra
+     như dòng ấy thuộc về chỗ khác. Con số thì GIỮ căn phải. */
+  [data-kt-density="compact"] .kt-table[data-kt-the] > tbody > tr > td.kt-num,
+  [data-kt-density="compact"] .kt-table[data-kt-the] > tbody > tr > td.kt-num::before {
+    text-align: left;
+  }
+  /* Con số cũng thôi căn phải, và đó là NỬA SAU của chính lập luận ngay
+     trên. Bản trước kéo cái NHÃN về mép trái vì "ở dạng thẻ không còn cột
+     nào để thẳng hàng" — câu ấy đúng với con số y hệt như với cái nhãn,
+     mà chỉ nửa đầu được thi hành. Đo 31/08 ở màn Đơn hàng: mọi giá trị
+     đứng sát mép trái của cột giá trị, riêng số tiền dạt hẳn sang phải,
+     nên một hàng đọc ra như thuộc về bảng khác. Căn phải là luật xếp
+     thẳng hàng đơn vị của BẢNG; ở đây không còn bảng nào. */
+  /* `width: 1px` là mẹo ép cột co sát nội dung TRONG bảng; trong lưới của
+     thẻ nó đọc thành một ô rộng đúng một điểm ảnh. */
+  [data-kt-density="compact"] .kt-table[data-kt-the] > tbody > tr > td.bl-cot-hep { width: auto; }
+
+  /* Hàng ngăn cách giữ nguyên dạng dòng. */
+  [data-kt-density="compact"] .kt-table[data-kt-the] > tbody > tr:has(> td[colspan]) { display: table; width: 100%; }
+  [data-kt-density="compact"] .kt-table[data-kt-the] > tbody > tr > td[colspan] {
+    display: table-cell; min-height: 0;
+  }
+}
+.kt-table tbody tr:hover { background: var(--kt-brand-100); }
+.kt-table tbody tr.is-moi { background: var(--kt-info-bg); box-shadow: inset var(--kt-border-w-thick) 0 0 var(--kt-info-border); }
+.kt-table tbody tr.is-moi:hover { background: var(--kt-brand-100); box-shadow: inset var(--kt-border-w-thick) 0 0 var(--kt-info-border); }
+.kt-moi-nhan { color: var(--kt-info-fg); font-weight: var(--kt-weight-bold); font-size: var(--kt-type-overline-size); letter-spacing: var(--kt-tracking-caps); text-transform: uppercase; }
+.kt-table tbody tr.is-selected { background: var(--kt-accent-100); box-shadow: inset var(--kt-border-w-thick) 0 0 var(--kt-action-indicator); }
+.kt-table .kt-num { text-align: right; font-variant-numeric: tabular-nums; }
+/* Ô chứa ngưỡi: ảnh đại diện và tên luôn cùng một dòng, dài quá thì cắt bằng ba chấm. */
+.kt-cell-user { display: inline-flex; align-items: center; gap: var(--kt-space-2); min-width: 0; max-width: 100%; white-space: nowrap; }
+.kt-cell-user > span:last-child { overflow: hidden; text-overflow: ellipsis; }
+.kt-table td:has(.kt-cell-user) { white-space: nowrap; }
+.kt-table--zebra-off tbody tr:nth-child(even) { background: transparent; }
+.kt-bulkbar { display: flex; align-items: center; gap: var(--kt-space-3); padding: var(--kt-space-2) var(--kt-pad); background: var(--kt-action-fill); color: var(--kt-text-on-accent); font-size: var(--kt-type-label-size); font-weight: var(--kt-weight-semibold); }
+.kt-bulkbar .kt-btn { --kt-state-ink: var(--kt-white); }
+
+/* Ô số PHẢI tự khai mực.
+   Nó là một bề mặt có nền riêng, và buồng lái dựng nó bằng `<button>` để
+   bấm được. Thẻ `button` mang màu chữ mặc định của trình duyệt, không
+   thừa hưởng từ cha: Chromium cho màu tối nên trông đúng, còn Safari
+   trên iPhone cho MÀU XANH LIÊN KẾT — con số tiền và con số việc, thứ to
+   nhất trên màn, đọc ra bằng màu của một hệ khác.
+   Lỗi này không máy nào ở bàn làm việc thấy được, và mọi cổng đều xanh
+   vì mã đúng luật: `font: inherit` có, chỉ thiếu `color`. */
+.kt-stat { border-radius: var(--kt-radius-md); display: flex; flex-direction: column; gap: var(--kt-space-1); padding: var(--kt-pad); background: var(--kt-surface); border: var(--kt-border-w) solid var(--kt-border-strong); color: var(--kt-text-primary); }
+.kt-stat__label { font-size: var(--kt-type-overline-size); font-weight: var(--kt-weight-bold); letter-spacing: var(--kt-tracking-caps); text-transform: uppercase; color: var(--kt-text-tertiary); }
+.kt-stat__value { font-size: var(--kt-type-display-size); font-weight: var(--kt-weight-bold); line-height: var(--kt-leading-tight); font-variant-numeric: tabular-nums; }
+.kt-stat__delta { font-size: var(--kt-type-label-size); font-weight: var(--kt-weight-semibold); }
+.kt-stat__delta--up { color: var(--kt-success-fg); }
+.kt-stat__delta--down { color: var(--kt-danger-fg); }
+
+.kt-timeline { display: flex; flex-direction: column; }
+.kt-timeline__item { display: grid; grid-template-columns: 20px 1fr; gap: var(--kt-space-3); padding-bottom: var(--kt-space-4); position: relative; }
+.kt-timeline__dot { width: 12px; height: 12px; margin-top: 4px; background: var(--kt-action-fill); }
+.kt-timeline__item:not(:last-child)::before { content: ""; position: absolute; left: 5px; top: 20px; bottom: 0; width: var(--kt-border-w); background: var(--kt-border-subtle); }
+.kt-timeline__time { font-size: var(--kt-type-label-size); color: var(--kt-text-tertiary); font-variant-numeric: tabular-nums; }
+/* Bốn chỗ đứng của một mốc. Hệ vẽ chuỗi có thứ tự theo chiều NGANG bằng
+   `.kt-progress`; bảy chặng kèm giờ thật và một câu giải thích thì không
+   xếp ngang nổi ở 390px, nên cùng dữ liệu `dungHanhTrinh()` đổ vào dòng
+   thời gian DỌC. Thiếu bốn lớp này thì mọi chặng vẽ giống hệt nhau, và
+   người mở màn ra mất đúng thứ họ đến để xem: việc đang đứng ở đâu.
+   `is-cho` KHÔNG phải mặc định. Chặng chưa tới phải tự khai, vì một chặng
+   quên khai đọc ra thành đã xong, mà sai theo hướng đó là hệ hứa hộ. */
+.kt-timeline__item.is-done .kt-timeline__dot { background: var(--kt-success-fill); }
+.kt-timeline__item.is-now .kt-timeline__dot { background: var(--kt-action-indicator); box-shadow: 0 0 0 4px var(--kt-accent-100); }
+.kt-timeline__item.is-stop .kt-timeline__dot { background: var(--kt-danger-fill); }
+.kt-timeline__item.is-cho .kt-timeline__dot { background: var(--kt-surface-sunken); box-shadow: inset 0 0 0 var(--kt-border-w) var(--kt-border-default); }
+.kt-timeline__item.is-done:not(:last-child)::before { background: var(--kt-success-border); }
+.kt-timeline__label { font-size: var(--kt-font-ui); font-weight: var(--kt-weight-semibold); }
+.kt-timeline__item.is-cho .kt-timeline__label { color: var(--kt-text-tertiary); font-weight: var(--kt-weight-regular); }
+.kt-timeline__note { font-size: var(--kt-type-label-size); color: var(--kt-text-secondary); line-height: var(--kt-leading-normal); }
+
+.kt-avatar { border-radius: var(--kt-radius-pill); display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; flex: none; background: var(--kt-surface-accent); color: var(--kt-text-brand); border: var(--kt-border-w) solid var(--kt-border-strong); font-size: var(--kt-type-label-size); font-weight: var(--kt-weight-bold); }
+.kt-avatar--sm { width: 28px; height: 28px; font-size: var(--kt-type-caption-size); }
+
+/* ==========================================================================
+   TRẠNG THÁI NGHIỆP VỤ
+   ==========================================================================*/
+/* Sáu trạng thái đơn: màu, ký hiệu hình học, kiểu viền, ba tín hiệu cùng lúc */
+.kt-badge { border-radius: var(--kt-radius-sm); display: inline-flex; align-items: center; gap: var(--kt-space-1); font-size: var(--kt-type-overline-size); font-weight: var(--kt-weight-bold); letter-spacing: 0.02em; padding: 3px var(--kt-space-2); border: var(--kt-border-w) solid currentColor; white-space: nowrap; }
+.kt-badge::before { font-size: 1.05em; line-height: 1; }
+.kt-badge--pending   { color: var(--kt-text-secondary); border-style: dashed; }
+.kt-badge--pending::before   { content: "○"; }
+.kt-badge--assigned  { color: var(--kt-info-fg); border-style: solid; }
+.kt-badge--assigned::before  { content: "◔"; }
+.kt-badge--enroute   { color: var(--kt-info-fill); border-style: double; border-width: var(--kt-border-w-thick); }
+.kt-badge--enroute::before   { content: "▶"; }
+/* Mốc tới sảnh. Cùng MÀU với chặng đang tới vì cùng một họ "chưa vào nhà",
+   khác ở ký hiệu và ở kiểu viền: hai tín hiệu, in đen trắng vẫn đọc ra.
+   Đây là chặng Grab và bTaskee không có, vì họ không mô hình hoá toà nhà. */
+.kt-badge--lobby     { color: var(--kt-info-fill); border-style: solid; border-width: var(--kt-border-w-thick); }
+.kt-badge--lobby::before     { content: "◈"; }
+.kt-badge--working   { color: var(--kt-warning-fg); background: var(--kt-warning-bg); border-style: solid; }
+.kt-badge--working::before   { content: "◑"; }
+.kt-badge--done      { color: var(--kt-success-fg); background: var(--kt-success-bg); border-style: solid; }
+.kt-badge--done::before      { content: "✓"; }
+.kt-badge--cancelled { color: var(--kt-danger-fg); background: var(--kt-danger-bg); border-style: solid; text-decoration: line-through; }
+.kt-badge--cancelled::before { content: "✕"; text-decoration: none; }
+
+/* Sáu giai đoạn vòng đời thợ: chữ in hoa, gạch chân dày, không viền */
+.kt-stage { display: inline-flex; align-items: center; gap: var(--kt-space-2); font-size: var(--kt-type-overline-size); font-weight: var(--kt-weight-bold); letter-spacing: var(--kt-tracking-caps); text-transform: uppercase; padding-bottom: 3px; border-bottom: var(--kt-border-w-thick) solid currentColor; }
+.kt-stage--candidate { color: var(--kt-text-tertiary); }
+.kt-stage--probation { color: var(--kt-warning-fg); }
+.kt-stage--active    { color: var(--kt-text-brand); }
+.kt-stage--senior    { color: var(--kt-success-fg); }
+.kt-stage--paused    { color: var(--kt-text-secondary); }
+.kt-stage--left      { color: var(--kt-danger-fg); }
+
+/* Trạng thái nhận việc hôm nay: đèn tròn, chữ thường, không viền */
+.kt-duty { display: inline-flex; align-items: center; gap: var(--kt-space-2); font-size: var(--kt-type-label-size); color: var(--kt-text-secondary); }
+.kt-duty::before { content: ""; width: 10px; height: 10px; flex: none; border: var(--kt-border-w) solid currentColor; }
+.kt-duty--free::before { background: var(--kt-success-fill); border-color: var(--kt-success-fill); }
+.kt-duty--busy::before { background: var(--kt-action-indicator); border-color: var(--kt-accent-700); border-radius: var(--kt-radius-full); }
+.kt-duty--off::before  { background: transparent; border-color: var(--kt-text-tertiary); }
+
+/* Cờ nghiệp vụ: quá hạn, bảo hành, đang chờ đồng bộ. Không phải trạng thái đơn. */
+.kt-flag { border-radius: var(--kt-radius-sm); display: inline-flex; align-items: center; gap: var(--kt-space-1); font-size: var(--kt-type-caption-size); font-weight: var(--kt-weight-bold); padding: 1px var(--kt-space-2); border: var(--kt-border-w-hair) solid currentColor; }
+.kt-flag--late { color: var(--kt-danger-fg); background: var(--kt-danger-bg); }
+.kt-flag--warranty { color: var(--kt-success-fg); background: var(--kt-success-bg); }
+.kt-flag--queued { color: var(--kt-neutral-fg); background: var(--kt-neutral-bg); border-style: dashed; }
+
+/* ── Bước nhận việc ─────────────────────────────────────────────────
+   Ba tín hiệu mỗi trạng thái, không chỉ màu: ký hiệu ở `::before`, màu
+   chữ, và kiểu viền. Lọc xám vẫn đọc ra được, và người không phân biệt
+   được đỏ với xanh vẫn thấy ○ khác ✓.
+
+   `--cu` viền NÉT ĐỨT vì nó nói "hệ không biết", khác hẳn "chưa nhận".
+   Cùng cách `kt-flag--queued` dùng nét đứt cho thứ chưa chắc chắn. */
+.kt-nhan { border-radius: var(--kt-radius-sm); display: inline-flex; align-items: center; gap: var(--kt-space-1);
+  font-size: var(--kt-type-caption-size); font-weight: var(--kt-weight-bold);
+  padding: 1px var(--kt-space-2); border: var(--kt-border-w-hair) solid currentColor; }
+.kt-nhan::before { font-weight: var(--kt-weight-regular); }
+.kt-nhan--cho  { color: var(--kt-warning-fg); background: var(--kt-warning-bg); }
+.kt-nhan--cho::before  { content: "\25D4"; }
+.kt-nhan--qua  { color: var(--kt-danger-fg); background: var(--kt-danger-bg); }
+.kt-nhan--qua::before  { content: "\25CB"; }
+.kt-nhan--xong { color: var(--kt-success-fg); background: var(--kt-success-bg); }
+.kt-nhan--xong::before { content: "\2713"; }
+.kt-nhan--cu   { color: var(--kt-neutral-fg); background: var(--kt-neutral-bg); border-style: dashed; }
+.kt-nhan--cu::before   { content: "\25C8"; }
+.kt-nhan--chua { color: var(--kt-text-tertiary); background: transparent; border-style: dotted; }
+.kt-nhan--chua::before { content: "\25CB"; }
+
+/* Thanh tiến trình sáu bước của đơn */
+/* Rãnh GIỮA hai chặng phải lớn hơn hẳn rãnh TRONG một chặng (8px với 4px).
+   Bản trước để cả hai bằng var(--kt-space-1), tức khoảng cách nối thanh với
+   nhãn của CÙNG một chặng bằng đúng khoảng cách tách chặng này khỏi chặng
+   bên: mắt hết căn cứ phân nhóm, và nhãn của chặng đang chờ (in đậm nên
+   rộng ra) đọc như dính vào nhãn chặng kế. Cùng luật tỷ lệ đã áp cho ngăn
+   kéo ở bản 2.8.0. Bản gọn không đụng tới: nó không chở chữ. */
+.kt-progress { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: var(--kt-space-2); }
+.kt-progress__step { display: flex; flex-direction: column; gap: var(--kt-space-1); font-size: var(--kt-type-overline-size); color: var(--kt-text-tertiary); }
+.kt-progress__bar { border-radius: var(--kt-radius-pill); height: var(--kt-space-2); background: var(--kt-surface-sunken); border: var(--kt-border-w-hair) solid var(--kt-border-subtle); }
+.kt-progress__step.is-done .kt-progress__bar { background: var(--kt-action-fill); border-color: var(--kt-text-brand); }
+.kt-progress__step.is-done { color: var(--kt-text-secondary); }
+.kt-progress__step.is-current .kt-progress__bar { background: var(--kt-action-indicator); border-color: var(--kt-accent-700); }
+.kt-progress__step.is-current { color: var(--kt-warning-fg); font-weight: var(--kt-weight-bold); }
+.kt-progress__step.is-cancelled .kt-progress__bar { background: var(--kt-danger-fill); border-color: var(--kt-danger-fill); }
+/* Bản gọn cho BẢNG nhiều dòng. Không chữ, nên bề ngang cố định thay vì chia
+   đều: trong một ô bảng thì `1fr` co theo cột hẹp nhất và tám chặng dồn
+   thành một vệt không đọc được. Nhãn ở trong `title`. */
+.kt-progress--gon { grid-auto-columns: var(--kt-space-4); gap: 2px; }
+.kt-progress--gon .kt-progress__step { gap: 0; }
+.kt-progress--gon .kt-progress__bar { height: var(--kt-space-3); }
+/* Chặng đang chờ mà KẸT. Ba tín hiệu: nền cảnh báo, viền đậm hơn, và dấu
+   gạch đứng ở giữa để phân biệt được khi lọc xám. */
+.kt-progress__step.is-ket .kt-progress__bar {
+  background: var(--kt-danger-fill); border-color: var(--kt-danger-fg);
+  border-width: var(--kt-border-w-thick);
+}
+
+/* Thanh tiến trình liên tục và con quay */
+.kt-bar { border-radius: var(--kt-radius-pill); height: var(--kt-space-2); background: var(--kt-surface-sunken); border: var(--kt-border-w-hair) solid var(--kt-border-subtle); overflow: hidden; }
+.kt-bar__fill { border-radius: var(--kt-radius-pill); height: 100%; background: var(--kt-action-indicator); transition: width var(--kt-dur-slow) var(--kt-ease-standard); }
+.kt-bar--indeterminate .kt-bar__fill { width: 40%; animation: kt-slide 1.2s var(--kt-ease-standard) infinite; }
+@keyframes kt-slide { from { transform: translateX(-100%); } to { transform: translateX(250%); } }
+.kt-spinner { width: 20px; height: 20px; border-radius: var(--kt-radius-full); border: var(--kt-border-w) solid var(--kt-border-default); border-top-color: var(--kt-action-indicator); animation: kt-spin 700ms linear infinite; }
+
+/* Ảnh nghiệm thu trước và sau */
+.kt-photos { display: grid; grid-template-columns: 1fr 1fr; gap: var(--kt-space-2); }
+.kt-photo { border-radius: var(--kt-radius-md); border: var(--kt-border-w) solid var(--kt-border-strong); background: var(--kt-surface-sunken); display: flex; flex-direction: column; }
+.kt-photo__label { border-radius: var(--kt-radius-sm); font-size: var(--kt-type-overline-size); font-weight: var(--kt-weight-bold); letter-spacing: var(--kt-tracking-caps); text-transform: uppercase; padding: var(--kt-space-1) var(--kt-space-2); background: var(--kt-surface-inverse); color: var(--kt-text-on-inverse); }
+.kt-photo__slot { aspect-ratio: 4 / 3; display: flex; align-items: center; justify-content: center; font-size: var(--kt-type-label-size); color: var(--kt-text-tertiary); }
+.kt-photo.is-empty { border-style: dashed; border-color: var(--kt-border-default); }
+.kt-photo.is-empty .kt-photo__label { background: var(--kt-surface-sunken); color: var(--kt-text-tertiary); }
+
+/* Chấm sao */
+.kt-stars { display: inline-flex; align-items: center; gap: 2px; font-size: var(--kt-type-subtitle-size); line-height: 1; color: var(--kt-border-default); }
+.kt-star { background: none; border: 0; padding: 0; font: inherit; color: inherit; cursor: pointer; }
+.kt-stars--input .kt-star { min-width: var(--kt-tap-min); min-height: var(--kt-tap-min); }
+.kt-star.is-on { color: var(--kt-accent-600); }
+.kt-rating { display: inline-flex; align-items: center; gap: var(--kt-space-2); font-size: var(--kt-font-ui); }
+.kt-rating__value { font-weight: var(--kt-weight-bold); font-variant-numeric: tabular-nums; }
+.kt-rating--low { background: var(--kt-danger-bg); border: var(--kt-border-w) solid var(--kt-danger-border); color: var(--kt-danger-fg); padding: 2px var(--kt-space-2); font-weight: var(--kt-weight-bold); }
+.kt-rating--low .kt-star.is-on { color: var(--kt-danger-fill); }
+
+/* Tiền và thời lượng. Một định dạng duy nhất toàn hệ: 350.000 VNĐ. */
+.kt-money { font-variant-numeric: tabular-nums; font-weight: var(--kt-weight-bold); white-space: nowrap; }
+.kt-money__unit { font-weight: var(--kt-weight-semibold); font-size: 0.82em; margin-left: 0.22em; }
+.kt-money--total { font-size: var(--kt-type-display-size); line-height: var(--kt-leading-tight); }
+.kt-money--void { color: var(--kt-text-tertiary); text-decoration: line-through; }
+.kt-duration { font-variant-numeric: tabular-nums; color: var(--kt-text-secondary); white-space: nowrap; }
+
+/* ==========================================================================
+   TRẠNG THÁI MÀN — rỗng, lỗi, đang tải
+   ==========================================================================*/
+.kt-empty, .kt-errorblock { border-radius: var(--kt-radius-lg); display: flex; flex-direction: column; align-items: flex-start; gap: var(--kt-space-2); padding: var(--kt-space-8) var(--kt-pad); background: var(--kt-surface); border: var(--kt-border-w) dashed var(--kt-border-default); }
+.kt-empty__title, .kt-errorblock__title { font-size: var(--kt-type-subtitle-size); font-weight: var(--kt-weight-bold); }
+.kt-empty__text, .kt-errorblock__text { font-size: var(--kt-font-ui); color: var(--kt-text-secondary); }
+.kt-errorblock { border-style: solid; border-color: var(--kt-danger-border); background: var(--kt-danger-bg); }
+.kt-errorblock__title { color: var(--kt-danger-fg); }
+
+.kt-skel { border-radius: var(--kt-radius-sm); position: relative; overflow: hidden; background: var(--kt-surface-sunken); height: 1em; }
+.kt-skel--line { height: 12px; }
+.kt-skel--title { height: 20px; width: 60%; }
+.kt-skel--block { height: 72px; }
+.kt-skel::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, var(--kt-sheen), transparent); animation: kt-shimmer 1.2s infinite; }
+@keyframes kt-shimmer { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
+
+/* ==========================================================================
+   THÀNH PHẦN NGHIỆP VỤ
+   Mười sáu khối chỉ có nghĩa với nền điều phối dịch vụ kỹ thuật. Nhãn và luật
+   của chúng khai trong design-system.js, không gõ lại trong màn.
+   ==========================================================================*/
+
+/* Thẻ dịch vụ trong danh mục: biểu tượng, tên, thời lượng, giá khởi điểm */
+.kt-svc { border-radius: var(--kt-radius-md); display: flex; align-items: center; gap: var(--kt-pad-tight); width: 100%; padding: var(--kt-pad-tight) var(--kt-pad); background: var(--kt-surface); box-shadow: var(--kt-surface-lift); border: var(--kt-surface-edge-w) solid var(--kt-border-subtle); font: inherit; color: inherit; text-align: left; cursor: pointer; transition: var(--kt-transition-color); }
+.kt-svc:hover { border-color: var(--kt-border-strong); }
+.kt-svc.is-selected { border-color: var(--kt-border-strong); background: var(--kt-surface-accent); }
+.kt-svc__icon { border-radius: var(--kt-radius-md); display: inline-flex; align-items: center; justify-content: center; width: var(--kt-control-h); height: var(--kt-control-h); flex: none; color: var(--kt-text-brand); background: var(--kt-surface-accent); border: var(--kt-border-w-hair) solid var(--kt-border-subtle); }
+.kt-svc__main { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+.kt-svc__name { font-size: var(--kt-font-ui); font-weight: var(--kt-weight-semibold); }
+.kt-svc__meta { font-size: var(--kt-type-label-size); color: var(--kt-text-tertiary); }
+.kt-svc__price { text-align: right; }
+.kt-svc[disabled] { opacity: var(--kt-state-disabled-opacity); cursor: not-allowed; }
+
+/* Lưới giờ hẹn: ngày ở trên, ô giờ ở dưới */
+.kt-slots { display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: var(--kt-space-2); }
+.kt-slot { border-radius: var(--kt-radius-md); display: flex; flex-direction: column; align-items: flex-start; gap: 2px; min-height: var(--kt-control-h); padding: var(--kt-space-2); font: inherit; font-size: var(--kt-font-ui); font-weight: var(--kt-weight-semibold); color: var(--kt-text-primary); background: var(--kt-surface); border: var(--kt-border-w-hair) solid var(--kt-border-default); cursor: pointer; transition: var(--kt-transition-color); }
+.kt-slot__note { font-size: var(--kt-type-caption-size); font-weight: var(--kt-weight-regular); color: var(--kt-text-tertiary); }
+.kt-slot:hover { border-color: var(--kt-border-strong); }
+.kt-slot.is-selected { border: var(--kt-border-w) solid var(--kt-border-strong); background: var(--kt-surface-accent); }
+.kt-slot[disabled] { opacity: var(--kt-state-disabled-opacity); cursor: not-allowed; text-decoration: line-through; }
+.kt-slot--soonest { border-left: var(--kt-border-w-thick) solid var(--kt-action-indicator); }
+/* Ô chọn giờ có GIÁ — rộng hơn hẳn ô chỉ có giờ.
+   Khung 84px vừa đủ cho "09:00"; nhét thêm giờ kết thúc và một con số
+   tiền vào đó thì cả ba cùng gãy dòng. Người đang so mười khung giờ cần
+   đọc một ô trong một nhịp mắt, và người lớn tuổi thì càng cần. */
+.kt-slots--gia { grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); }
+.kt-slots--gia .kt-slot { min-height: calc(var(--kt-control-h) * 1.6); gap: var(--kt-space-1); }
+/* Giá đứng riêng một dòng, đậm hơn chữ phụ: nó là thứ mắt tìm sau giờ. */
+.kt-slot__gio { font-size: var(--kt-font-ui); font-weight: var(--kt-weight-semibold); font-variant-numeric: tabular-nums; }
+.kt-slot__gia { font-size: var(--kt-type-body-size); font-weight: var(--kt-weight-bold); font-variant-numeric: tabular-nums; color: var(--kt-text-primary); }
+.kt-slot__gia--them { color: var(--kt-text-secondary); font-weight: var(--kt-weight-semibold); }
+
+/* Thẻ thợ: một hình thức duy nhất dùng ở cả ba cửa */
+.kt-tech { border-radius: var(--kt-radius-lg); display: flex; align-items: flex-start; gap: var(--kt-pad-tight); padding: var(--kt-pad-tight); background: var(--kt-surface); border: var(--kt-border-w) solid var(--kt-border-subtle); }
+.kt-tech__main { display: flex; flex-direction: column; gap: var(--kt-space-1); flex: 1; min-width: 0; }
+.kt-tech__name { font-size: var(--kt-font-ui); font-weight: var(--kt-weight-bold); }
+.kt-tech__line { display: flex; align-items: center; gap: var(--kt-space-3); flex-wrap: wrap; }
+.kt-tech__dist { font-size: var(--kt-type-label-size); color: var(--kt-text-secondary); font-variant-numeric: tabular-nums; }
+.kt-tech--suggested { border-color: var(--kt-border-strong); box-shadow: inset var(--kt-border-w-thick) 0 0 var(--kt-action-indicator); }
+/* Thợ KHÔNG giao được. Thẻ vẫn ở lại danh sách chứ không bị lọc đi: lọc im
+   lặng là chỗ người điều phối không hiểu vì sao thợ quen của khách biến
+   mất. Nhưng nó phải TRÔNG khác, vì mắt đọc hình trước khi đọc chữ — một
+   thẻ chặn giống hệt thẻ giao được là mời người ta bấm rồi ăn từ chối. */
+.kt-tech--chan { border-color: var(--kt-danger-border); box-shadow: inset var(--kt-border-w-thick) 0 0 var(--kt-danger-fill); }
+.kt-tech__why { font-size: var(--kt-type-label-size); color: var(--kt-danger-fg); }
+
+/* Bốn chỉ số chất lượng thợ, máy tự đo từ đơn */
+.kt-quality { display: flex; flex-direction: column; gap: var(--kt-space-2); }
+.kt-quality__row { display: grid; grid-template-columns: 1fr 68px 44px; align-items: center; gap: var(--kt-space-2); font-size: var(--kt-type-label-size); }
+.kt-quality__track { border-radius: var(--kt-radius-pill); height: 6px; background: var(--kt-surface-sunken); border: var(--kt-border-w-hair) solid var(--kt-border-subtle); }
+.kt-quality__fill { border-radius: var(--kt-radius-pill); display: block; height: 100%; background: var(--kt-success-fill); }
+.kt-quality__row.is-weak .kt-quality__fill { background: var(--kt-danger-fill); }
+.kt-quality__val { text-align: right; font-weight: var(--kt-weight-bold); font-variant-numeric: tabular-nums; }
+
+/* Đồng hồ bậc hoa hồng: ba bậc, vị trí hiện tại, còn mấy đơn lên bậc */
+.kt-tier { display: flex; flex-direction: column; gap: var(--kt-space-2); }
+.kt-tier__bars { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--kt-space-1); }
+.kt-tier__bar { border-radius: var(--kt-radius-pill); height: var(--kt-space-2); background: var(--kt-surface-sunken); border: var(--kt-border-w-hair) solid var(--kt-border-subtle); }
+.kt-tier__bar.is-reached { background: var(--kt-action-fill); border-color: var(--kt-text-brand); }
+.kt-tier__bar.is-current { background: var(--kt-action-indicator); border-color: var(--kt-accent-700); }
+.kt-tier__legend { display: flex; justify-content: space-between; font-size: var(--kt-type-caption-size); color: var(--kt-text-tertiary); }
+
+/* Bảo hành: viên thuốc có đếm ngày, ba mức */
+.kt-warranty { border-radius: var(--kt-radius-md); display: inline-flex; align-items: center; gap: var(--kt-space-2); padding: 2px var(--kt-space-2); font-size: var(--kt-type-label-size); font-weight: var(--kt-weight-bold); border: var(--kt-border-w-hair) solid currentColor; }
+.kt-warranty--active { color: var(--kt-success-fg); background: var(--kt-success-bg); }
+.kt-warranty--expiring { color: var(--kt-warning-fg); background: var(--kt-warning-bg); }
+.kt-warranty--expired { color: var(--kt-text-tertiary); background: var(--kt-surface-sunken); text-decoration: line-through; }
+
+/* Đồng hồ hạn giờ hẹn, ba mức, dùng ở buồng lái và cửa thợ */
+.kt-sla { border-radius: var(--kt-radius-md); display: inline-flex; align-items: center; gap: var(--kt-space-1); padding: 2px var(--kt-space-2); font-size: var(--kt-type-caption-size); font-weight: var(--kt-weight-bold); font-variant-numeric: tabular-nums; border: var(--kt-border-w-hair) solid currentColor; }
+.kt-sla--ok { color: var(--kt-text-secondary); }
+.kt-sla--warn { color: var(--kt-warning-fg); background: var(--kt-warning-bg); }
+.kt-sla--late { color: var(--kt-danger-fg); background: var(--kt-danger-bg); }
+
+/* Mời nhận đơn: có vạch đếm ngược tự rút, hết thì đơn trả về hàng đợi */
+.kt-invite { border-radius: var(--kt-radius-lg); display: flex; flex-direction: column; background: var(--kt-surface); border: var(--kt-border-w) solid var(--kt-border-strong); }
+.kt-invite__timer { border-radius: var(--kt-radius-sm); height: var(--kt-space-2); background: var(--kt-surface-sunken); }
+.kt-invite__timer > span { display: block; height: 100%; background: var(--kt-danger-fill); transition: width 250ms linear; }
+.kt-invite__head { display: flex; align-items: center; justify-content: space-between; gap: var(--kt-space-2); padding: var(--kt-pad-tight) var(--kt-pad); border-bottom: var(--kt-border-w-hair) solid var(--kt-border-subtle); }
+.kt-invite__body { padding: var(--kt-pad); display: flex; flex-direction: column; gap: var(--kt-pad-tight); }
+.kt-invite__actions { display: flex; flex-direction: column; gap: var(--kt-space-2); padding: 0 var(--kt-pad) var(--kt-pad); }
+
+/* Luật gửi xe theo toà: khối chữ có biểu tượng, không phải đoạn văn trơn */
+.kt-parking { border-radius: var(--kt-radius-lg); display: flex; flex-direction: column; gap: var(--kt-space-2); padding: var(--kt-pad-tight); background: var(--kt-surface-accent); color: var(--kt-warning-fg); font-size: var(--kt-type-label-size); }
+.kt-parking__row { display: flex; align-items: flex-start; gap: var(--kt-space-2); }
+.kt-parking__key { color: var(--kt-text-secondary); min-width: 92px; }
+
+/* Bảng bóc tách tiền: từng dòng cộng lại thành tổng, luôn có dòng tổng */
+.kt-breakdown { display: flex; flex-direction: column; gap: var(--kt-space-2); }
+.kt-breakdown__row { display: flex; align-items: baseline; justify-content: space-between; gap: var(--kt-space-3); font-size: var(--kt-font-ui); }
+.kt-breakdown__row > span:first-child { color: var(--kt-text-secondary); }
+.kt-breakdown__row--discount { color: var(--kt-success-fg); }
+.kt-breakdown__total { display: flex; align-items: baseline; justify-content: space-between; gap: var(--kt-space-3); padding-top: var(--kt-space-2); border-top: var(--kt-border-w) solid var(--kt-border-strong); font-weight: var(--kt-weight-bold); }
+
+/* Chọn cách trả tiền: ô lớn, một cột trên điện thoại */
+.kt-pay { display: flex; flex-direction: column; gap: var(--kt-space-2); }
+.kt-pay__tile { border-radius: var(--kt-radius-md); display: flex; align-items: center; gap: var(--kt-pad-tight); min-height: var(--kt-control-h); padding: var(--kt-space-2) var(--kt-pad-tight); background: var(--kt-surface); border: var(--kt-border-w-hair) solid var(--kt-border-default); cursor: pointer; font-size: var(--kt-font-ui); }
+.kt-pay__tile:hover { border-color: var(--kt-border-strong); }
+.kt-pay__tile.is-selected { border: var(--kt-border-w) solid var(--kt-border-strong); background: var(--kt-surface-accent); }
+.kt-pay__tile > input { appearance: none; margin: 0; width: var(--kt-choice-size); height: var(--kt-choice-size); flex: none; border-radius: var(--kt-radius-full); border: var(--kt-border-w) solid var(--kt-border-strong); }
+.kt-pay__tile > input:checked { border-width: calc(var(--kt-choice-size) * 0.28); }
+.kt-qr { border-radius: var(--kt-radius-lg); display: flex; flex-direction: column; align-items: center; gap: var(--kt-space-2); padding: var(--kt-pad); background: var(--kt-surface); border: var(--kt-border-w) solid var(--kt-border-strong); }
+.kt-qr__code { width: 168px; height: 168px; background: var(--kt-surface-sunken); border: var(--kt-border-w-hair) solid var(--kt-border-default); display: grid; place-content: center; color: var(--kt-text-tertiary); font-size: var(--kt-type-caption-size); }
+
+/* Hoá đơn: danh sách dòng có số lượng và đơn giá */
+.kt-invoice { display: flex; flex-direction: column; }
+.kt-invoice__row { display: grid; grid-template-columns: minmax(0, 1fr) 44px auto; gap: var(--kt-space-2); padding: var(--kt-space-2) 0; border-bottom: var(--kt-border-w-hair) solid var(--kt-border-subtle); font-size: var(--kt-font-ui); }
+.kt-invoice__row > :nth-child(2) { text-align: center; color: var(--kt-text-tertiary); font-variant-numeric: tabular-nums; }
+.kt-invoice__row > :nth-child(3) { text-align: right; }
+
+/* Sự vụ và khiếu nại: mức độ, hạn xử lý, người phụ trách */
+.kt-case { border-radius: var(--kt-radius-lg); display: flex; flex-direction: column; gap: var(--kt-space-2); padding: var(--kt-pad-tight); background: var(--kt-surface); border-left: var(--kt-space-2) solid var(--kt-neutral-border); border-top: var(--kt-border-w-hair) solid var(--kt-border-subtle); border-right: var(--kt-border-w-hair) solid var(--kt-border-subtle); border-bottom: var(--kt-border-w-hair) solid var(--kt-border-subtle); }
+.kt-case--high { border-left-color: var(--kt-danger-fill); }
+.kt-case--mid { border-left-color: var(--kt-warning-fill); }
+.kt-case__head { display: flex; align-items: center; justify-content: space-between; gap: var(--kt-space-2); }
+.kt-case__id { font-size: var(--kt-type-label-size); font-weight: var(--kt-weight-bold); font-variant-numeric: tabular-nums; }
+
+/* Chọn địa bàn năm cấp: dòng thụt theo cấp, cấp ghi đè có cờ */
+.kt-addr { border-radius: var(--kt-radius-lg); display: flex; flex-direction: column; background: var(--kt-surface); border: var(--kt-border-w) solid var(--kt-border-subtle); }
+.kt-addr__row { display: flex; align-items: center; gap: var(--kt-space-2); min-height: var(--kt-row-h); padding: var(--kt-space-2) var(--kt-pad-tight); border-bottom: var(--kt-border-w-hair) solid var(--kt-border-subtle); font: inherit; font-size: var(--kt-font-ui); color: inherit; background: transparent; border-left: 0; border-right: 0; border-top: 0; text-align: left; cursor: pointer; width: 100%; }
+.kt-addr__row:last-child { border-bottom: 0; }
+.kt-addr__row:hover { background: var(--kt-surface-sunken); }
+.kt-addr__row.is-selected { background: var(--kt-accent-100); box-shadow: inset var(--kt-border-w-thick) 0 0 var(--kt-action-indicator); }
+.kt-addr__row[data-level="2"] { padding-left: calc(var(--kt-pad-tight) + var(--kt-space-5)); }
+.kt-addr__row[data-level="3"] { padding-left: calc(var(--kt-pad-tight) + var(--kt-space-10)); }
+.kt-addr__row[data-level="4"] { padding-left: calc(var(--kt-pad-tight) + var(--kt-space-12)); }
+.kt-addr__row[data-level="5"] { padding-left: calc(var(--kt-pad-tight) + var(--kt-space-16)); }
+.kt-addr__meta { margin-left: auto; font-size: var(--kt-type-label-size); color: var(--kt-text-tertiary); }
+
+/* Hàng chờ đồng bộ khi thợ mất mạng */
+.kt-queue { border-radius: var(--kt-radius-lg); display: flex; align-items: center; gap: var(--kt-space-2); padding: var(--kt-space-2) var(--kt-pad-tight); background: var(--kt-neutral-bg); color: var(--kt-neutral-fg); font-size: var(--kt-type-label-size); border: var(--kt-border-w-hair) dashed var(--kt-neutral-border); }
+.kt-queue__count { font-weight: var(--kt-weight-bold); font-variant-numeric: tabular-nums; }
+
+/* Ảnh nghiệm thu bắt buộc: thiếu thì viền đỏ và có chữ nhắc */
+.kt-photos.is-required .kt-photo.is-empty { border-color: var(--kt-border-error); }
+.kt-photos.is-required .kt-photo.is-empty .kt-photo__label { background: var(--kt-danger-bg); color: var(--kt-danger-fg); }
+
+/* Chỗ đặt tin báo nổi do KT.ui.toast dựng ra */
+/* TIN BÁO NỔI ĐỨNG Ở TRÊN, KHÔNG Ở ĐÁY.
+
+   Đáy của hệ này đã có chủ, và chủ của nó là thứ người ta đang định bấm:
+   cửa thợ dính `.footdock` mang nút bước, cửa khách dính thanh tab. Một
+   tấm che nổi lên đúng chỗ ấy thì trong mấy giây nó vừa che mất câu trả
+   lời vừa che mất cái nút, và người đang vội sẽ bấm trúng chính nó.
+
+   Đáy là thành ngữ quen của tin báo nổi, nhưng thành ngữ ấy sinh ra cho
+   những màn có đáy trống. Ở đây thì không, nên nó đổi chỗ.
+
+   Cách mép trên đủ xa để không đè tiêu đề của thanh đầu dính; thanh đầu
+   không có token chiều cao riêng nên số này đo từ nó (`--kt-pad-tight`
+   hai lần cộng một dòng chữ) chứ không phải một con số nhặt ra. */
+.kt-toast-host { position: fixed; left: 50%; transform: translateX(-50%); top: calc(var(--kt-space-5) + var(--kt-tap-min)); z-index: var(--kt-z-toast); display: flex; flex-direction: column; gap: var(--kt-space-2); width: min(520px, calc(100vw - 32px)); }
+
+/* ==========================================================================
+   LỚP VĂN BẢN DÀI
+   Thang chữ giao diện không dùng được cho bài viết: câu dài cần cỡ lớn hơn,
+   dòng thưa hơn, bề rộng vùng đọc hẹp hơn. Đây là lớp riêng cho bài viết,
+   trang giới thiệu, sổ tay và tài liệu in.
+   ==========================================================================*/
+.kt-article { max-width: 720px; margin: 0 auto; padding: var(--kt-space-8) var(--kt-pad); }
+.kt-article--wide { max-width: 960px; }
+.kt-kicker { font-size: var(--kt-type-overline-size); font-weight: var(--kt-weight-bold); letter-spacing: var(--kt-tracking-caps); text-transform: uppercase; color: var(--kt-text-accent); }
+/* HAI bộ chọn cho MỘT luật, và bộ đầu là bản vá 30/08/2026.
+
+   `.kt-headline-xl` khai trần cho độ ưu tiên (0,1,0), thua `.kt-app h1`
+   (0,1,1) ở đầu tệp. Nên tiêu đề to nhất của trang giới thiệu chạy
+   **26px thay vì 44px** kể từ ngày dựng — mất 40% cỡ, trên live, và
+   bằng đúng cỡ tám cái h2 bên dưới nó. Không lỗi nào nổ: lớp có thật,
+   luật có thật, chỉ là bị đè.
+
+   Cùng hình dạng với `.kt-app p{margin:0}` đã xoá lề bốn khối ở `#83`.
+   Và đây là lớp DUY NHẤT trong cả thang chữ khai trần — mọi lớp kia
+   viết `.kt-app .kt-display`, `.kt-app .kt-headline`… nên bản vá không
+   phát minh gì, nó chỉ đưa lớp này về đúng hình dạng của họ hàng nó.
+
+   Giữ luôn bộ chọn trần: khối VĂN BẢN DÀI cố ý dùng được ngoài `.kt-app`
+   (tài liệu in, sổ tay), và bỏ nó đi là lặng lẽ thu hẹp phạm vi đã hứa. */
+.kt-app .kt-headline-xl,
+.kt-headline-xl { font-size: clamp(28px, 4.4vw, 44px); line-height: 1.12; font-weight: var(--kt-weight-bold); letter-spacing: -0.015em; }
+.kt-lede { font-size: 19px; line-height: 1.6; color: var(--kt-text-secondary); max-width: 62ch; }
+.kt-byline { display: flex; align-items: center; gap: var(--kt-space-3); font-size: var(--kt-type-label-size); color: var(--kt-text-tertiary); }
+
+.kt-prose { font-size: 17px; line-height: 1.7; color: var(--kt-text-primary); max-width: 68ch; }
+.kt-prose > * + * { margin-top: var(--kt-space-5); }
+.kt-prose h2 { font-size: 26px; line-height: 1.25; margin-top: var(--kt-space-10); }
+.kt-prose h3 { font-size: 20px; line-height: 1.3; margin-top: var(--kt-space-8); }
+.kt-prose h2 + p, .kt-prose h3 + p { margin-top: var(--kt-space-3); }
+.kt-prose p { max-width: 68ch; }
+.kt-prose strong { font-weight: var(--kt-weight-bold); }
+.kt-prose a { color: var(--kt-text-link); text-decoration: underline; text-underline-offset: 3px; }
+.kt-prose ul, .kt-prose ol { padding-left: var(--kt-space-6); display: flex; flex-direction: column; gap: var(--kt-space-2); }
+.kt-prose li { padding-left: var(--kt-space-1); }
+.kt-prose hr { height: 0; border: 0; border-top: var(--kt-border-w) solid var(--kt-border-strong); margin: var(--kt-space-10) 0; }
+.kt-prose table { width: 100%; border-collapse: collapse; font-size: var(--kt-type-body-size); }
+.kt-prose th { text-align: left; font-size: var(--kt-type-overline-size); letter-spacing: var(--kt-tracking-caps); text-transform: uppercase; border-bottom: var(--kt-border-w) solid var(--kt-border-strong); padding: var(--kt-space-2) var(--kt-space-3) var(--kt-space-2) 0; }
+.kt-prose td { border-bottom: var(--kt-border-w-hair) solid var(--kt-border-subtle); padding: var(--kt-space-3) var(--kt-space-3) var(--kt-space-3) 0; vertical-align: top; }
+.kt-prose--compact { font-size: var(--kt-type-body-size); line-height: 1.62; }
+
+.kt-quote { border-left: var(--kt-border-w-thick) solid var(--kt-border-strong); padding-left: var(--kt-pad); font-size: 20px; line-height: 1.5; }
+.kt-quote__by { display: block; margin-top: var(--kt-space-2); font-size: var(--kt-type-label-size); color: var(--kt-text-tertiary); }
+.kt-figure { display: flex; flex-direction: column; gap: var(--kt-space-2); }
+.kt-figcaption { font-size: var(--kt-type-label-size); color: var(--kt-text-tertiary); border-left: var(--kt-border-w) solid var(--kt-border-subtle); padding-left: var(--kt-space-3); }
+.kt-callout { border-radius: var(--kt-radius-md); display: flex; flex-direction: column; gap: var(--kt-space-2); padding: var(--kt-pad); background: var(--kt-surface-accent); border-left: var(--kt-space-2) solid var(--kt-border-strong); font-size: var(--kt-type-body-size); }
+.kt-callout__title { font-weight: var(--kt-weight-bold); }
+.kt-toc { display: flex; flex-direction: column; gap: var(--kt-space-2); padding: var(--kt-pad); background: var(--kt-surface-sunken); font-size: var(--kt-type-body-size); }
+/* KHE GIỮA HAI BƯỚC PHẢI VƯỢT KHOẢNG CÁCH HAI DÒNG TRONG MỘT BƯỚC.
+   Mỗi bước là một câu dẫn cộng hai ba dòng giải thích ở `line-height:
+   1.6`, tức các dòng cách nhau 24px, trong khi khe giữa hai bước khai
+   16px. Khoảng nhỏ hơn nằm ở chỗ đáng lẽ phải là khoảng lớn hơn, nên
+   bốn bước đọc thành một khối chữ liền và con số bên trái là thứ duy
+   nhất nói rằng đây là bốn mục rời (đo trên trang giới thiệu, 29/08). */
+.kt-steps { counter-reset: kt-step; display: flex; flex-direction: column; gap: var(--kt-space-6); --kt-step-size: 34px; }
+[data-kt-density="compact"] .kt-steps, .kt-mode-admin .kt-steps { --kt-step-size: 26px; gap: var(--kt-space-4); }
+.kt-steps > li { counter-increment: kt-step; display: block; list-style: none; padding: 0; line-height: 1.6; text-wrap: pretty; overflow-wrap: break-word; }
+.kt-steps > li::after { content: ""; display: block; clear: both; }
+/* Câu dẫn in đậm nằm riêng một dòng, để phần giải thích không bị ngắt lẻ chữ. */
+.kt-steps > li > b:first-child { display: block; margin-bottom: var(--kt-space-1); }
+.kt-steps > li::before { content: counter(kt-step); float: left; margin: 2px var(--kt-space-3) var(--kt-space-1) 0; display: grid; place-items: center; width: var(--kt-step-size); height: var(--kt-step-size); background: var(--kt-surface-inverse); color: var(--kt-text-on-inverse); font-size: var(--kt-type-label-size); font-weight: var(--kt-weight-bold); }
+
+/* Khung màn */
+.kt-screen { display: flex; flex-direction: column; min-height: 100%; }
+.kt-screen__body { flex: 1; padding: var(--kt-pad); display: flex; flex-direction: column; gap: var(--kt-gap); }
+
+/* ==========================================================================
+   TÔN TRỌNG THIẾT LẬP NGƯỜI DÙNG
+   ==========================================================================*/
+@media (prefers-reduced-motion: reduce) {
+  .kt-app *, .kt-app *::before, .kt-app *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+}
+@media (prefers-contrast: more) {
+  :root { --kt-border-default: var(--kt-brand-900); --kt-text-secondary: var(--kt-brand-900); --kt-text-tertiary: var(--kt-slate-900); }
+}
+@media print {
+  .kt-app { background: var(--kt-white); }
+  .kt-tabbar, .kt-appbar, .kt-toast, .kt-sheet, .kt-scrim, .kt-drawer { display: none !important; }
+  .kt-badge, .kt-flag, .kt-nhan { border-color: var(--kt-black) !important; color: var(--kt-black) !important; background: transparent !important; }
+}
+
+/* Ô lịch trong bảng điều phối theo giờ: trống, đang có đơn, hoặc đích để phân đơn đang giữ */
+.kt-cell { display: block; width: 100%; min-height: 30px; padding: 3px 6px; font: inherit; font-size: var(--kt-type-caption-size); font-weight: var(--kt-weight-bold); text-align: left; color: var(--kt-text-tertiary); background: transparent; border: var(--kt-border-w-hair) dashed var(--kt-border-subtle); cursor: default; }
+.kt-cell--busy { color: var(--kt-info-fg); background: var(--kt-info-bg); border: var(--kt-border-w) solid var(--kt-info-border); }
+.kt-cell--target { color: var(--kt-accent-800); background: var(--kt-accent-100); border: var(--kt-border-w) dashed var(--kt-border-accent); cursor: pointer; }
+.kt-cell--target:hover { background: var(--kt-accent-200); }
+
+/* ── Biểu đồ ─────────────────────────────────────────────────────────────
+   Bo góc 0 như mọi thứ khác. Không dải màu chuyển, không khối nổi, không
+   hình tròn. Màu lấy từ token trạng thái tầng 2, và chỉ chỗ gọi mới được
+   khai trạng thái: hình KHÔNG tự suy tốt xấu từ dấu của con số.
+
+   Cột và chấm dựng bằng HTML, không bằng SVG. Hai lý do, cả hai đã trả
+   giá: SVG ở đây kéo giãn tự do theo bề ngang thẻ nên mọi chữ vẽ trong nó
+   đều méo, tức hình không mang nổi một cái nhãn số nào; và thẻ dẫn bọc
+   quanh một hình SVG thì dính luật display:contents, thứ đã giết mọi cột
+   có số suốt từ ngày dựng. Nét đường vẫn là SVG, vì nét là toạ độ. */
+.kt-chart { --kt-chart-h: 160px;
+  display: flex; flex-direction: column; gap: var(--kt-space-2); margin: 0; }
+.kt-chart__title { font-size: var(--kt-type-label-size); font-weight: var(--kt-weight-bold); color: var(--kt-text-primary); }
+.kt-chart__meta { color: var(--kt-text-tertiary); }
+
+/* Khung đo: trục giá trị bên trái, sàn vẽ, trục kỳ bên dưới. Chừa lề trên
+   cho nhãn số đứng trên đầu cột cao nhất. */
+.kt-chart__khung { display: grid; grid-template-columns: auto minmax(0, 1fr);
+  column-gap: var(--kt-space-2); row-gap: var(--kt-space-1); padding-top: var(--kt-space-4); }
+.kt-chart__truc-y { display: flex; flex-direction: column; justify-content: space-between;
+  align-items: flex-end; height: var(--kt-chart-h); font-size: var(--kt-type-caption-size);
+  line-height: 1; color: var(--kt-text-tertiary); font-variant-numeric: tabular-nums; }
+.kt-chart__san { position: relative; height: var(--kt-chart-h); }
+.kt-chart__luoi { position: absolute; inset: 0; display: flex; flex-direction: column;
+  justify-content: space-between; pointer-events: none; }
+.kt-chart__luoi > i { display: block; border-top: var(--kt-border-w-hair) solid var(--kt-border-subtle); }
+.kt-chart__luoi > i:last-child { border-top-color: var(--kt-border-default); }
+
+/* Cột. `min-height` để một con số bé xíu khác không vẫn nhìn thấy được:
+   một cột mỏng hơn nét kẻ đọc ra y hệt không có cột nào. */
+.kt-chart__cots { position: absolute; inset: 0; display: flex; align-items: flex-end; gap: var(--kt-space-1); }
+.kt-chart__o { position: relative; flex: 1 1 0; min-width: 0; height: 100%; }
+.kt-chart__cot { position: absolute; left: 0; right: 0; background: var(--kt-text-brand);
+  min-height: var(--kt-border-w-thick); }
+.kt-chart__cot.is-can { background: var(--kt-warning-fill); }
+.kt-chart__cot.is-chan { background: var(--kt-danger-fill); }
+.kt-chart__cot.is-yen { background: var(--kt-success-fill); }
+/* Kỳ không đo được: khối mờ suốt chiều cao, KHÔNG phải cột cao 0. Cột cao
+   0 đọc ra là "tháng ấy bằng không", tức bịa ra một con số chưa từng đo. */
+.kt-chart__rong { position: absolute; inset: 0; background: var(--kt-surface-sunken); opacity: .55; }
+.kt-chart__so { position: absolute; left: 0; right: 0; text-align: center; line-height: 1;
+  padding-bottom: var(--kt-space-1); font-size: var(--kt-type-caption-size);
+  color: var(--kt-text-secondary); font-variant-numeric: tabular-nums; }
+
+/* Nét đường và chấm. Chấm vuông chứ không tròn, đúng luật bo góc 0. */
+.kt-chart__ve { position: absolute; inset: 0; display: block; width: 100%; height: 100%; overflow: visible; }
+.kt-chart__duong { fill: none; stroke: var(--kt-text-brand); stroke-width: 2; vector-effect: non-scaling-stroke; }
+.kt-chart__duong.is-can { stroke: var(--kt-warning-fill); }
+.kt-chart__duong.is-chan { stroke: var(--kt-danger-fill); }
+.kt-chart__duong.is-yen { stroke: var(--kt-success-fill); }
+.kt-chart__diem { position: absolute; width: var(--kt-space-5); height: var(--kt-space-5);
+  margin: 0 0 calc(var(--kt-space-5) / -2) calc(var(--kt-space-5) / -2);
+  display: flex; align-items: center; justify-content: center; }
+.kt-chart__diem > i { display: block; width: var(--kt-space-2); height: var(--kt-space-2);
+  background: var(--kt-text-brand); outline: var(--kt-border-w) solid var(--kt-surface); }
+.kt-chart__duong.is-day-1 { stroke: var(--kt-brand-900); }
+.kt-chart__duong.is-day-2 { stroke: var(--kt-brand-700); }
+.kt-chart__duong.is-day-3 { stroke: var(--kt-brand-500); }
+.kt-chart__duong.is-day-4 { stroke: var(--kt-brand-300); }
+.kt-chart__duong.is-day-5 { stroke: var(--kt-brand-200); }
+.kt-chart__diem.is-day-1 > i { background: var(--kt-action-fill); }
+.kt-chart__diem.is-day-2 > i { background: var(--kt-brand-700); }
+.kt-chart__diem.is-day-3 > i { background: var(--kt-brand-500); }
+.kt-chart__diem.is-day-4 > i { background: var(--kt-brand-300); }
+.kt-chart__diem.is-day-5 > i { background: var(--kt-brand-200); }
+.kt-chart__diem.is-can > i { background: var(--kt-warning-fill); }
+.kt-chart__diem.is-chan > i { background: var(--kt-danger-fill); }
+.kt-chart__diem.is-yen > i { background: var(--kt-success-fill); }
+
+/* Vạch ngưỡng, nét đứt, nằm trong sàn. */
+.kt-chart__moc { position: absolute; left: 0; right: 0;
+  border-top: var(--kt-border-w) dashed var(--kt-text-tertiary); pointer-events: none; }
+.kt-chart__moc-nhan { position: absolute; right: 0; padding-bottom: var(--kt-space-1);
+  color: var(--kt-text-tertiary); background: var(--kt-surface); }
+
+/* Trục kỳ. Nhãn nào bị thưa đi thì để lại một ô RỖNG chứ không dồn hàng:
+   ô rỗng giữ cho nhãn còn lại đứng thẳng cột với cái nó nói về. */
+.kt-chart__truc { grid-column: 2; display: flex; gap: var(--kt-space-1); }
+.kt-chart__truc > .kt-chart__nhan { flex: 1 1 0; min-width: 0; text-align: center;
+  font-size: var(--kt-type-caption-size); color: var(--kt-text-tertiary);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* Đã thưa thì cho nhãn TRÀN khỏi ô của nó: ô bên cạnh đang rỗng nên không
+   đè ai, còn cắt "02/26" thành "02/…" thì cái trục ghi một chuỗi không ai
+   đọc ra — mất nhãn đắt hơn nhiều so với thừa vài pixel. */
+.kt-chart__truc.is-thua > .kt-chart__nhan { overflow: visible; }
+/* Màn hẹp thì thưa thêm một nấc nữa. Hệ đã thưa theo SỐ KỲ ở lúc dựng,
+   nhưng số kỳ không biết gì về bề ngang: mười hai kỳ vừa vặn trong một thẻ
+   nửa màn hình để bàn lại chen chúc trong 390px. Bỏ nhãn ở vị trí xen kẽ
+   và GIỮ CHỖ (visibility) chứ không gỡ khỏi hàng, để nhãn còn lại vẫn đứng
+   thẳng cột với cái nó nói về. Kỳ cuối luôn sống sót vì phép đếm bắt đầu
+   từ ô thứ hai. */
+@media (max-width: 560px), (pointer: coarse) and (max-device-width: 500px) {
+  .kt-chart__truc.is-thua > .kt-chart__nhan:nth-child(4n + 2) { visibility: hidden; }
+}
+
+/* Chỗ bấm được của một điểm. `display: contents` chỉ đúng cho thẻ dẫn nằm
+   trong HTML thường; bên trong SVG nó cắt luôn con khỏi cây vẽ. Khai chung
+   một luật cho cả hai chỗ đã giết mọi cột và mọi chấm CÓ SỐ, trong khi ô
+   "chưa đo được" không bọc thẻ dẫn nên vẫn hiện: hình vẽ ra đúng phần nó
+   không đo được. Nên luật khai theo đúng chỗ nó đúng. */
+.kt-chart__di { cursor: pointer; }
+.kt-chart__xep > .kt-chart__di, .kt-chart__o > .kt-chart__di,
+.kt-chart__hang > .kt-chart__di { display: contents; }
+.kt-chart__di:focus-visible .kt-chart__cot,
+.kt-chart__di:focus-visible .kt-chart__diem > i {
+  outline: var(--kt-focus-ring-w) solid var(--kt-border-focus); outline-offset: var(--kt-focus-ring-offset); }
+
+/* Thanh chồng. Phần nào không tự khai trạng thái thì nhận một bậc sắc độ
+   theo thứ tự: bốn phần cùng một màu mực thì cái thanh không tách được
+   phần nào với phần nào, và người đọc phải bỏ hình mà xuống đếm dòng chú
+   thích. Sắc độ chỉ để tách, nó không khen và không chê ai. */
+.kt-chart__xep { display: flex; width: 100%; height: var(--kt-space-6);
+  background: var(--kt-surface-sunken); overflow: hidden; }
+.kt-chart__phan { display: block; height: 100%; background: var(--kt-text-brand); }
+.kt-chart__phan.is-can { background: var(--kt-warning-fill); }
+.kt-chart__phan.is-chan { background: var(--kt-danger-fill); }
+.kt-chart__phan.is-yen { background: var(--kt-success-fill); }
+.kt-chart__phan.is-day-1 { background: var(--kt-action-fill); }
+.kt-chart__phan.is-day-2 { background: var(--kt-brand-700); }
+.kt-chart__phan.is-day-3 { background: var(--kt-brand-500); }
+.kt-chart__phan.is-day-4 { background: var(--kt-brand-300); }
+.kt-chart__phan.is-day-5 { background: var(--kt-brand-200); }
+.kt-chart__phan + .kt-chart__phan { border-left: var(--kt-border-w-hair) solid var(--kt-surface); }
+.kt-chart__chu { display: flex; flex-wrap: wrap; gap: var(--kt-space-2) var(--kt-space-4); list-style: none; margin: 0; padding: 0; }
+.kt-chart__chu-muc { display: inline-flex; align-items: center; gap: var(--kt-space-2); font-size: var(--kt-type-label-size); }
+.kt-chart__o-mau { width: 10px; height: 10px; background: var(--kt-text-brand); }
+.kt-chart__chu-muc.is-can .kt-chart__o-mau { background: var(--kt-warning-fill); }
+.kt-chart__chu-muc.is-chan .kt-chart__o-mau { background: var(--kt-danger-fill); }
+.kt-chart__chu-muc.is-yen .kt-chart__o-mau { background: var(--kt-success-fill); }
+.kt-chart__chu-muc.is-day-1 .kt-chart__o-mau { background: var(--kt-action-fill); }
+.kt-chart__chu-muc.is-day-2 .kt-chart__o-mau { background: var(--kt-brand-700); }
+.kt-chart__chu-muc.is-day-3 .kt-chart__o-mau { background: var(--kt-brand-500); }
+.kt-chart__chu-muc.is-day-4 .kt-chart__o-mau { background: var(--kt-brand-300); }
+.kt-chart__chu-muc.is-day-5 .kt-chart__o-mau { background: var(--kt-brand-200); }
+
+/* Thanh xếp hạng ngang. Vạch ngưỡng vẽ THẬT lên thanh: một cái vạch nói ra
+   ai vượt chỉ bằng cách nhìn, còn một dòng chữ "Vạch: 3.000.000 VNĐ" bắt
+   người đọc so nhẩm mười lăm lần rồi vẫn không chắc. */
+.kt-chart__hangs { display: flex; flex-direction: column; gap: var(--kt-space-2); }
+.kt-chart__hang { display: grid; grid-template-columns: minmax(0, 9rem) minmax(0, 1fr) auto; align-items: center; gap: var(--kt-space-3); }
+.kt-chart__hang-ten { display: flex; flex-direction: column; min-width: 0;
+  font-size: var(--kt-type-label-size); line-height: var(--kt-leading-snug); }
+.kt-chart__hang-ten, .kt-chart__hang-phu { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.kt-chart__hang-phu { color: var(--kt-text-tertiary); }
+.kt-chart__hang-thanh { position: relative; display: block; height: var(--kt-space-4); background: var(--kt-surface-sunken); }
+.kt-chart__hang-thanh > span { display: block; height: 100%; background: var(--kt-text-brand); }
+.kt-chart__hang-moc { position: absolute; top: 0; bottom: 0;
+  border-left: var(--kt-border-w) dashed var(--kt-text-primary); }
+.kt-chart__hang.is-can .kt-chart__hang-thanh > span { background: var(--kt-warning-fill); }
+.kt-chart__hang.is-chan .kt-chart__hang-thanh > span { background: var(--kt-danger-fill); }
+.kt-chart__hang.is-yen .kt-chart__hang-thanh > span { background: var(--kt-success-fill); }
+.kt-chart__hang-so { font-variant-numeric: tabular-nums; font-size: var(--kt-type-label-size); font-weight: var(--kt-weight-semibold); white-space: nowrap; }
+
+/* Chỗ đứng của đường xử lý trong khối báo tin. Bốn mức báo tin dùng chung
+   hai lớp này, xem `render.baoTin`. Mức `chan` bắt buộc có, vì nói ra một
+   chỗ bị chặn mà không chỉ được làm gì tiếp là chưa xong việc.
+   BẪY vừa vấp: grep `kt-banner__act` khớp trúng `.kt-banner__action` đã có
+   sẵn (một lớp khác hẳn, đẩy nút sang phải), nên em tưởng mình khai trùng
+   rồi gỡ đi mất. Khớp tiền tố không phải khớp tên. */
+.kt-banner__act { display: flex; flex-wrap: wrap; gap: var(--kt-space-2); margin-top: var(--kt-space-2); }
+.kt-empty__act { display: flex; flex-wrap: wrap; gap: var(--kt-space-2); margin-top: var(--kt-space-1); }
+
+/* ==========================================================================
+   CHÚ GIẢI · ba tầng
+   Hòn đá thứ ba của nền móng đã có hai hòn: luật đường xử lý (màn nói ra một
+   vấn đề thì phải chỉ được đường xử) và luật con số sống (màn nói ra một con
+   số thì phải chỉ được nó từ đâu ra). Luật này: màn bày ra một thứ thì phải
+   khai được nó là gì và người đọc được lợi gì.
+   CHỮ thuộc về Worker, ở đây chỉ có HÌNH.
+   ==========================================================================*/
+
+/* ── Tầng 1 · thẻ cửa tự giới thiệu ─────────────────────────────────────
+   Nằm TRONG dòng chảy của màn, không phải tấm phủ chào mừng. Tấm phủ chặn
+   mất màn hình đúng lúc người ta đang có việc gấp, và chạy được đúng một
+   lần. Thẻ này đóng được, mở lại được, và không giành chỗ khi đã đóng. */
+.kt-guide { border-radius: var(--kt-radius-md); display: flex; flex-direction: column; gap: var(--kt-space-3);
+  padding: var(--kt-pad); background: var(--kt-surface-accent);
+  border-left: var(--kt-space-2) solid var(--kt-border-strong); }
+.kt-guide__head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--kt-space-4); }
+.kt-guide__q { font-size: var(--kt-type-body-size); font-weight: var(--kt-weight-bold); line-height: 1.45; text-wrap: pretty; }
+.kt-guide__body { display: flex; flex-direction: column; gap: var(--kt-space-3); }
+.kt-guide__row { display: grid; grid-template-columns: minmax(0, 8.5rem) minmax(0, 1fr); gap: var(--kt-space-2) var(--kt-space-4); align-items: start; }
+@media (max-width: 640px), (pointer: coarse) and (max-device-width: 500px) { .kt-guide__row { grid-template-columns: minmax(0, 1fr); gap: 2px; } }
+.kt-guide__k { font-size: var(--kt-type-overline-size); font-weight: var(--kt-weight-bold);
+  letter-spacing: var(--kt-tracking-caps); text-transform: uppercase; color: var(--kt-text-tertiary); padding-top: 2px; }
+.kt-guide__v { font-size: var(--kt-type-body-size); line-height: 1.6; color: var(--kt-text-primary); text-wrap: pretty; }
+/* Tầm nhìn: cửa nhiều tầm nhìn thì mỗi tầm nhìn tự nói nó trả lời câu gì.
+   Không có dòng này thì hai tầm nhìn cạnh nhau chỉ là hai cái nhãn. */
+.kt-guide__views { display: flex; flex-direction: column; gap: var(--kt-space-2);
+  padding-top: var(--kt-space-3); border-top: var(--kt-border-w-hair) solid var(--kt-border-default); }
+.kt-guide__view { display: grid; grid-template-columns: minmax(0, 8.5rem) minmax(0, 1fr); gap: var(--kt-space-4); font-size: var(--kt-type-label-size); line-height: 1.55; }
+@media (max-width: 640px), (pointer: coarse) and (max-device-width: 500px) { .kt-guide__view { grid-template-columns: minmax(0, 1fr); gap: 0; } }
+.kt-guide__view b { font-weight: var(--kt-weight-semibold); }
+/* Thẻ thiếu ô bắt buộc thì MANG DẤU trên màn, không im. Cùng luật với khối
+   báo tin thiếu `vi`: chú giải giữ chỗ còn tệ hơn không có chú giải, vì nó
+   trông như đã xong. */
+.kt-guide.is-thieu { border-left-color: var(--kt-danger-border); background: var(--kt-danger-bg); }
+
+/* ── Tầng 2 và 3 · chữ có nghĩa, và vị trí tự khai vai ───────────────────
+   `title=` KHÔNG dùng được: không chạm được trên điện thoại, không đọc được
+   bằng bàn phím, và không đo được ai đã mở. Ba lý do, mỗi lý do đủ để loại. */
+.kt-term { position: relative; display: inline; padding: 0; margin: 0; font: inherit; color: inherit;
+  background: none; border: 0; border-bottom: var(--kt-border-w) dotted var(--kt-border-strong);
+  cursor: help; text-align: left; }
+.kt-term:hover, .kt-term[aria-expanded="true"] { background: var(--kt-surface-accent); }
+.kt-term[aria-expanded="true"] { border-bottom-style: solid; }
+/* Nút chú giải vị trí: đứng cạnh nhãn của ô số hay đầu bảng, nên nó phải
+   nhỏ hơn chữ quanh nó mà vẫn bấm được. */
+.kt-note { position: relative; display: inline-flex; align-items: center; gap: 3px;
+  padding: 2px var(--kt-space-2); margin-left: var(--kt-space-2); font: inherit;
+  font-size: var(--kt-type-overline-size); font-weight: var(--kt-weight-bold);
+  letter-spacing: var(--kt-tracking-caps); text-transform: uppercase;
+  color: var(--kt-text-tertiary); background: transparent;
+  border: var(--kt-border-w-hair) solid var(--kt-border-default); cursor: pointer; }
+.kt-note:hover, .kt-note[aria-expanded="true"] { color: var(--kt-text-primary);
+  background: var(--kt-surface-accent); border-color: var(--kt-border-strong); }
+
+/* Khối bung. Neo tuyệt đối vào chữ, JS tự lật khi tràn khung nhìn.
+   Một cái một lúc, đúng luật của hộp thoại. */
+.kt-pop { position: absolute; z-index: var(--kt-z-popover); top: calc(100% + var(--kt-space-1)); left: 0;
+  width: min(22rem, calc(100vw - var(--kt-space-8))); display: flex; flex-direction: column; gap: var(--kt-space-3);
+  padding: var(--kt-pad); text-align: left; white-space: normal; font-weight: var(--kt-weight-regular);
+  letter-spacing: normal; text-transform: none;
+  background: var(--kt-surface); border: var(--kt-border-w) solid var(--kt-border-strong);
+  box-shadow: var(--kt-shadow-lg); cursor: auto; }
+.kt-pop.is-phai { left: auto; right: 0; }
+.kt-pop.is-tren { top: auto; bottom: calc(100% + var(--kt-space-1)); }
+.kt-pop__chu { font-size: var(--kt-type-label-size); font-weight: var(--kt-weight-bold);
+  color: var(--kt-text-brand); text-transform: none; letter-spacing: normal; }
+.kt-pop__cau { font-size: var(--kt-type-body-size); line-height: 1.6; color: var(--kt-text-primary); text-wrap: pretty; }
+.kt-pop__row { display: flex; flex-direction: column; gap: 2px; }
+.kt-pop__k { font-size: var(--kt-type-overline-size); font-weight: var(--kt-weight-bold);
+  letter-spacing: var(--kt-tracking-caps); text-transform: uppercase; color: var(--kt-text-tertiary); }
+.kt-pop__v { font-size: var(--kt-type-label-size); line-height: 1.55; color: var(--kt-text-secondary); text-wrap: pretty; }
+/* Vế "đừng lẫn với" là vế đắt nhất của một mục từ điển: năm cặp chữ trong
+   hệ này lẫn nhau là năm con số sai đi ra ngoài. Nên nó được tô riêng. */
+.kt-pop__row--lan { padding: var(--kt-space-2) var(--kt-space-3);
+  background: var(--kt-warning-bg); border-left: var(--kt-border-w-thick) solid var(--kt-warning-border); }
+.kt-pop__row--lan .kt-pop__k, .kt-pop__row--lan .kt-pop__v { color: var(--kt-warning-fg); }
+.kt-pop__foot { display: flex; flex-wrap: wrap; gap: var(--kt-space-2); padding-top: var(--kt-space-2);
+  border-top: var(--kt-border-w-hair) solid var(--kt-border-default); }
+
+/* Dòng chữ có nghĩa dưới tiêu đề màn. Các nút chữ nằm trong một dòng văn nên
+   phải xuống dòng được, và dấu chấm ngăn cách KHÔNG được dính vào nút kế khi
+   dòng gãy — nó là chữ của người đọc, không phải viền của cái nút. */
+.kt-chu-hang { display: block; line-height: 1.9; }
+.kt-chu-cach { color: var(--kt-text-tertiary); padding: 0 2px; }
